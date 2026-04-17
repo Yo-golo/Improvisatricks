@@ -1,3 +1,52 @@
+// Système de modale custom
+function showModal({ title, message, icon, buttons }) {
+    return new Promise(resolve => {
+        const overlay = document.getElementById('modal-overlay');
+        document.getElementById('modal-title').textContent = title || '';
+        document.getElementById('modal-message').textContent = message || '';
+        const iconEl = document.getElementById('modal-icon');
+        iconEl.textContent = icon || '';
+        iconEl.style.display = icon ? '' : 'none';
+
+        const btnsEl = document.getElementById('modal-buttons');
+        btnsEl.innerHTML = '';
+        buttons.forEach(btn => {
+            const el = document.createElement('button');
+            el.textContent = btn.label;
+            el.className = btn.className || '';
+            el.addEventListener('click', () => {
+                overlay.classList.add('modal-closing');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('modal-visible', 'modal-closing');
+                }, 180);
+                resolve(btn.value);
+            });
+            btnsEl.appendChild(el);
+        });
+
+        overlay.classList.remove('hidden');
+        overlay.classList.remove('modal-closing');
+    });
+}
+
+function showAlert(message, title = 'Information', icon = '') {
+    return showModal({
+        title, message, icon,
+        buttons: [{ label: 'OK', className: 'modal-btn-primary', value: true }]
+    });
+}
+
+function showConfirm(message, title = 'Confirmation') {
+    return showModal({
+        title, message,
+        buttons: [
+            { label: 'Annuler',      className: 'modal-btn-secondary', value: false },
+            { label: 'Réinitialiser', className: 'modal-btn-danger',   value: true  }
+        ]
+    });
+}
+
 // Variables globales pour stocker les données des joueurs et des équipes
 let playerCount = 0;
 let players = [];
@@ -184,8 +233,8 @@ function setupEventListeners() {
 
     // Gestion du bouton Reset
     if (DOM.resetBtn) {
-        DOM.resetBtn.addEventListener('click', () => {
-            if (confirm('Voulez-vous vraiment réinitialiser le jeu ?')) {
+        DOM.resetBtn.addEventListener('click', async () => {
+            if (await showConfirm('Voulez-vous vraiment réinitialiser le jeu ?', 'Réinitialiser ?')) {
                 resetGame();
             }
         });
@@ -206,7 +255,7 @@ function setupEventListeners() {
     if (DOM.challengeBtn) {
         DOM.challengeBtn.addEventListener('click', () => {
             const challenge = CHALLENGES[Math.floor(Math.random() * CHALLENGES.length)];
-            alert(`Challenge : ${challenge}`);
+            showAlert(challenge, 'Challenge !', '⚡');
         });
     }
 
@@ -234,7 +283,7 @@ function setupEventListeners() {
                 generateTeams();
                 saveGameState();
             } else {
-                alert(`Problème : ${players.length} noms pour ${playerCount} joueurs`);
+                showAlert(`${players.length} noms saisis pour ${playerCount} joueurs attendus.`, 'Attention', '⚠️');
             }
         });
     }
@@ -521,10 +570,10 @@ function createTeamCard(index, team, score) {
 }
 
 // Fonction pour vérifier si une équipe a gagné
-function checkForWinner() {
+async function checkForWinner() {
     const winningTeamIndex = scores.findIndex(score => score >= 5);
     if (winningTeamIndex >= 0) {
-        alert(`L'équipe ${winningTeamIndex + 1} a gagné !`);
+        await showAlert(`L'équipe ${winningTeamIndex + 1} a gagné !`, 'Victoire !', '🏆');
         resetGame();
     } else {
         toggleVisibility(document.getElementById('null-round-btn'), false);
