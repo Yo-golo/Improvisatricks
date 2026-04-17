@@ -1,0 +1,53 @@
+declare -gx REPL_IDENTITY_KEY=k2.secret.nkInkJi89o9riALRPcyqmNovCOS8m1UutRWk1xTtBsaqpT7oTDfVeS3nUAONiuVIuI0UrrVuPeUEWsJSO5woLw
+declare -gx REPLIT_DB_URL=https://kv.replit.com/v0/eyJhbGciOiJIUzUxMiIsImlzcyI6ImNvbm1hbiIsImtpZCI6InByb2Q6MSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjb25tYW4iLCJleHAiOjE3MjYyODMyMjcsImlhdCI6MTcyNjE3MTYyNywiZGF0YWJhc2VfaWQiOiIxNGIzMWY3OC03MWYzLTRjZTYtYjU3MC0zZDQ1MjY0Y2FiMWQifQ.vm-Y7IAsp6YVO137t0C1Wvion2_rx_JMhau8arC0qAf_pQNXIgT9j3h5XrxztbionHtakePK1L07phflWhC-ig
+declare -gx DOCKER_CONFIG=/home/runner/Improvisatricks/.config/docker
+declare -gx GIT_EDITOR=replit-git-editor
+declare -gx REPLIT_BASHRC=/nix/store/sljr8697zka2mxn30fara6d362bqyaid-replit-bashrc/bashrc
+declare -gx REPLIT_PID1_FLAG_NIXMODULES_BEFORE_REPLIT_NIX=1
+declare -gx REPL_IDENTITY=v2.public.Q2lReE5HSXpNV1kzT0MwM01XWXpMVFJqWlRZdFlqVTNNQzB6WkRRMU1qWTBZMkZpTVdRU0NtTnZiblJoWTNRMk1UWWFEMGx0Y0hKdmRtbHpZWFJ5YVdOcmN5SWtNVFJpTXpGbU56Z3ROekZtTXkwMFkyVTJMV0kxTnpBdE0yUTBOVEkyTkdOaFlqRmtPTlNxbnhGYUZBb0ZjbWxyWlhJU0MybHVkR1Z5WVdOMGFYWmyymWMX3_BbWs6vRXo8TIYLmLIxXOidQT2m2OVk2L-9hK6mKtgVB84sWtCP35qx6nk333K_b9I-7ilbWRSWXokO.R0FFaUJtTnZibTFoYmhLV0NIWXlMbkIxWW14cFl5NVJNbVF6VTFST1MxUXdOVEJrTVd4U1RUSlZNMDFVU201VVZrNUZVVmRzZVdGVmNGaE5NRXB2VWtSTk5XUnNhR2hSV0doMlVUQmtRbFpYUmt0YU1qbHlWRlpTVTJGVk1UWlNiVEZQWlcxa01GUnVjRWRpVlRFMVRVUkNXazFzVlhsVVJtUktUVlUxTmxGWVVrNU5iRVYzVkd4U1NrMXJOVWhVYldoYVlXdGFjbEl5WkROVk1FNTBWRzVhYVdKc1NtOVhWRTVTVFdzeFZWZFhSa05XUjNCV1kxaEJORlZyWkc1Wk1teERWMFZ3ZDFsVVNsZGxWV1J1VFVoR1JFMXRlREZhUldSWFpWWnNXRlJxUW1oWFJuQnpVMWR3VjJOck1YQk9XR1JyVmpCd2VsbFdaRTVrVjA1WlVteGFUVlpHY0VkYVNIQk9aVVprU0dSRVFrOVdSVnBEVld0a2QxZHRUblJsUmxKVlVqSjRVRlZ0ZEhwTmF6RllVMjVHVGsxdWFFUlZiVFZMVWtaYVdHTkVSbHBOU0ZKRlZEQkZPVkJhV1MxT1RsRlFNMFJKY0RKZk1EWm9URkU0TjJJdE1sTlBhbGN0U1RWT05VY3lUME5PZWpaUWR6bEZWMXBvUW0xV2FYVjFjRUZGVFRaU1NVUmtiaTFzVGxGSGRUZFJNbVIxV1RkU2FHVjVOakJSYURsM2J5NVNNRVpHWVZWS2RGUnVXbWxpVkVadldXMW9UVmxyUm5WWFdHeE5ZbXRKZUZkWE1UUmpSbXcxVGxaS1RtSldTVEpXVkVaclRVZFdkRk5zV2xSaWJrSlhWbTB4TkZVeFVuSlZiVVpPVm01Q1YxVXlkRTlXUmxwWllVVldWbVZyU25KVmFrRXhVMVpHY2xOc1drNVNiSEJUVm0xd1QxbFhVbGRpTTJoVFlsZG9VMVpxU205a1ZsWllaRWQwYVdKRk5WaFphMVpQVm0xS1ZXSkZWbFpoYTBwSVdrZDRjMVpzU25WU2JFcFhWbGhDU2xZeWNFTmpNV1J6VW14b2FGTkdjRk5VVldSVFVURmFSMXBGWkZKaVZWcEpWMnRWZUZVd01YUlZhM1JYVFZaYVZGVlVTa3BrTVZKeVlVWktWMkV4Y0haV1ZscHJZakpLYzFSdVNtbFRSVnBZV1cxMGQxUXhiRmRWYkdST1RWaENTRmRyVmpCaGF6RnlWMnhzVjFKdGFGaFdSRVpoWkVkV1NXTkdaRmRpVmtwSlZrWlNTMVF5VFhsVGFscFdZWHBzV0ZSWGVFdGlNVmw1VFZSU1ZFMXJXa2RVVmxaclZrZEtSbGRzV2xwV2VrVXdWMVphYzA1c1JsVlNiWEJwVWxoQ05sWkVSbGRaVjBWNVUyeHNWbFpGV2xkWmExcGhZMnh3U0dWRldteFNia0pHVmpJeGQyRkhSWGhqUnpsWFlXdGFWRlY2Ums1bFJscHpVMnhHVjFKRlNqTldNblJoVjIxT2RHTkZNVkJYUlRSNldrVldXazVXY0VWU1dGSnBZbFJXVVZRd1pHRlZiVXBZWVVSS1ZGSldjSGhXYTFaeVpFZFNSV0ZGY0dsaVZuQlJWMFJKZUZaVk1YUlplbEpxVjBoQ1JsVnJaRlpPUmxwRllrWlNhRTFXU2paWGJYaHZZbGRXY21KNlFsaFdWVEUyVjIxemQyVnNaRlpPV0VwVVZrZFNXVmRYYTNkT1ZrcHlWVzA1VDJGVVJreFVha2sxVWtWNGMxTllaRk5oTVhCdlZteFdkMDFHV2toT1YwWm9WakJ3VmxWdE1EVlhiVXBZVldwS1ZtRnJjRkJWTVZwUFpGWmtkRkpzVGxObGJXY3c
+declare -gx NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
+declare -gx DIRENV_CONFIG=/etc/direnv
+declare -gx NIX_PS1='\[\033[01;34m\]\w\[\033[00m\]\$ '
+declare -gx HOSTNAME=7086cf42860d
+declare -gx REPLIT_PID1_FLAG_REPLIT_RTLD_LOADER=1
+declare -gx REPLIT_RIPPKGS_INDICES=/nix/store/mfrw2kh7ppd5qmjwm5sj9c41lkh2hlij-rippkgs-indices
+declare -gx USER=runner
+declare -gx REPLIT_DEV_DOMAIN=14b31f78-71f3-4ce6-b570-3d45264cab1d-00-2828th72tbaw1.riker.replit.dev
+declare -gx REPLIT_NIX_CHANNEL=stable-23_11
+declare -gx REPLIT_CLUSTER=riker
+declare -gx REPL_LANGUAGE=html
+declare -gx NIX_PATH=nixpkgs=/home/runner/.nix-defexpr/channels/nixpkgs-stable-23_11:/home/runner/.nix-defexpr/channels
+declare -gx DISPLAY=:0
+read -r _new_path <<< "/nix/store/qd9g9si4ny52afirncwcvpa3v587jc08-pid1/bin:/nix/store/q40ddaxp6f3s3hqd2x18p29p34aba9h6-replit-runtime-path/bin:/home/runner/.nix-profile/bin:/home/runner/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+#PATH=/nix/store/qd9g9si4ny52afirncwcvpa3v587jc08-pid1/bin:/nix/store/q40ddaxp6f3s3hqd2x18p29p34aba9h6-replit-runtime-path/bin:/home/runner/.nix-profile/bin:/home/runner/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+if [ -e "/run/replit/env/last" ]; then read -r _last_path < <(\grep '^#PATH=' /run/replit/env/last | cut -f 2 -d =); fi
+_user_components="$(\tr : $'\n' <<< "${PATH:-}" |\grep -xv -f <(\tr : $'\n' <<< "${_last_path}") |\tr $'\n' :)"
+declare -gx PATH="${_user_components}${_new_path}"
+declare -gx REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+declare -gx LIBGL_DRIVERS_PATH=/nix/store/0lfnrz6nq5myv787cih78knzaqy9z9fc-mesa-23.1.9-drivers/lib/dri
+declare -gx GIT_ASKPASS=replit-git-askpass
+declare -gx REPL_OWNER=contact616
+declare -gx XDG_DATA_HOME=/home/runner/Improvisatricks/.local/share
+declare -gx SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+declare -gx REPL_IMAGE=gcr.io/marine-cycle-160323/nix:bf8590a3e2f0a8b70b7ca175eeed9074dffbfca9
+declare -gx REPLIT_RTLD_LOADER=1
+declare -gx NIXPKGS_ALLOW_UNFREE=1
+declare -gx REPLIT_SUBCLUSTER=interactive
+declare -gx LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
+declare -gx REPL_SLUG=Improvisatricks
+declare -gx DENO_TLS_CA_STORE=system
+declare -gx REPLIT_PID1_VERSION=0.0.0-852215e
+declare -gx REPL_PUBKEYS='{"crosis-ci":"7YlpcYh82oR9NSTtSYtR5jDL4onNzCGJGq6b+9CuZII=","crosis-ci:1":"7YlpcYh82oR9NSTtSYtR5jDL4onNzCGJGq6b+9CuZII=","crosis-ci:latest":"7YlpcYh82oR9NSTtSYtR5jDL4onNzCGJGq6b+9CuZII=","prod":"tGsjlu/BJvWTgvMaX7acuUb7AO1dXOrRiuk7y083RFE=","prod:1":"tGsjlu/BJvWTgvMaX7acuUb7AO1dXOrRiuk7y083RFE=","prod:2":"8uGN+vfszlnV93/HCSHlVLG0xddMlPkir1Ni4JKT4+w=","prod:3":"9+MCOSHQSQlcodXoot8dC8NLhc862nLkx1/VMsbY2h8=","prod:4":"8uGN+vfszlnV93/HCSHlVLG0xddMlPkir1Ni4JKT4+w=","prod:5":"9+MCOSHQSQlcodXoot8dC8NLhc862nLkx1/VMsbY2h8=","prod:latest":"tGsjlu/BJvWTgvMaX7acuUb7AO1dXOrRiuk7y083RFE=","vault-goval-token":"D5jJoMx1Ml54HM92NLgXl+MzptwDqbSsfyFG6f52g9E=","vault-goval-token:1":"D5jJoMx1Ml54HM92NLgXl+MzptwDqbSsfyFG6f52g9E=","vault-goval-token:latest":"D5jJoMx1Ml54HM92NLgXl+MzptwDqbSsfyFG6f52g9E="}'
+declare -gx COLORTERM=truecolor
+declare -gx REPLIT_ENVIRONMENT=production
+declare -gx XDG_CACHE_HOME=/home/runner/Improvisatricks/.cache
+declare -gx PROMPT_DIRTRIM=2
+declare -gx REPLIT_CLI=/nix/store/hhfpqg5armm4vi90i3d4qjblyx0andja-pid1-0.0.1/bin/replit
+declare -gx NIX_PROFILES='/nix/var/nix/profiles/default /home/runner/.nix-profile'
+declare -gx __EGL_VENDOR_LIBRARY_FILENAMES=/nix/store/0lfnrz6nq5myv787cih78knzaqy9z9fc-mesa-23.1.9-drivers/share/glvnd/egl_vendor.d/50_mesa.json
+declare -gx REPL_HOME=/home/runner/Improvisatricks
+declare -gx HOME=/home/runner
+declare -gx LANG=en_US.UTF-8
+declare -gx REPL_ID=14b31f78-71f3-4ce6-b570-3d45264cab1d
+declare -gx XDG_CONFIG_HOME=/home/runner/Improvisatricks/.config
+declare -gx REPL_OWNER_ID=36164948

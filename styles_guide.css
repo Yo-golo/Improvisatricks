@@ -1,0 +1,224 @@
+/* Style de base */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Make layout sizing predictable */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Conteneur principal */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(44, 62, 80, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* En-tête */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+header h1 {
+    font-size: 2.5em;
+    color: #ffcc00;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+}
+
+header p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    color: #bdc3c7;
+    text-align: center;
+}
+
+/* Bouton de retour */
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.back-button:hover {
+    background-color: #ffcc00;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Tableau des styles */
+main {
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    table-layout: fixed; /* Prevent overflow and enable wrapping */
+}
+
+th, td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    word-break: break-word;
+    hyphens: auto;
+    line-height: 1.5;
+}
+
+th {
+    background-color: #ff6600;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Animation pour le chargement des styles */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+tr {
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+tr:nth-child(n) {
+    animation-delay: calc(n * 0.1s);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        align-items: stretch;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 60px 12px 20px; /* Leave room for header/back button */
+        border-radius: 0;
+        min-height: 100vh;
+        background-color: rgba(44, 62, 80, 0.92);
+    }
+
+    header h1 {
+        font-size: 1.8em;
+        margin: 0 0 10px;
+    }
+
+    header p {
+        font-size: 1em;
+        margin: 0 0 16px;
+    }
+
+    /* Back button becomes inline to avoid overlap */
+    .back-button {
+        position: static;
+        display: block;
+        width: 100%;
+        margin: 10px 0 0;
+        text-align: center;
+        font-size: 1rem;
+        padding: 12px 16px;
+    }
+
+    main {
+        padding: 16px;
+        border-radius: 10px;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody, tr, td {
+        display: block;
+        width: 100%;
+    }
+
+    tbody tr {
+        margin-bottom: 12px;
+        background-color: transparent;
+        border-bottom: 1px solid #7f8c8d;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    tbody td {
+        text-align: right;
+        padding: 12px 12px 12px 50%;
+        position: relative;
+        font-size: 0.95rem;
+    }
+
+    tbody td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding-left: 12px;
+        font-weight: 600;
+        text-align: left;
+        color: #ffcc00;
+    }
+}
+
+/* Improve touch targets on all devices */
+button, [role="button"] {
+    touch-action: manipulation;
+}
+
+/* Safe area support for devices with notches */
+@supports (padding: max(0px)) {
+    body {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}

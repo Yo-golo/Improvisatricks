@@ -1,0 +1,536 @@
+/* Style de base */
+:root {
+    --primary-color: #ff6600;
+    --secondary-color: #ffcc00;
+    --background-dark: rgba(0, 0, 0, 0.85);
+    --text-light: #ffffff;
+    --spacing-sm: 10px;
+    --spacing-md: 20px;
+    --spacing-lg: 30px;
+    --border-radius: 15px;
+    --button-radius: 12px;
+    --transition-speed: 0.3s;
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--text-light);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* Conteneur principal */
+.container {
+    padding: var(--spacing-md);
+    background-color: var(--background-dark);
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    margin: var(--spacing-md);
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+@media (min-width: 600px) {
+    .container {
+        width: 90%;
+        max-width: 900px;
+        padding: var(--spacing-lg);
+    }
+}
+
+/* En-tête */
+header {
+    position: relative;
+    width: 100%;
+    margin-bottom: var(--spacing-lg);
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: var(--spacing-md);
+    color: var(--secondary-color);
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    font-weight: 700;
+}
+
+header p {
+    font-size: 1.2em;
+    margin-bottom: var(--spacing-lg);
+    color: var(--primary-color);
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+    opacity: 0.9;
+}
+
+/* Bouton Reset */
+#reset-btn {
+    position: fixed;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+#reset-btn:hover {
+    background-color: var(--secondary-color);
+    transform: rotate(180deg) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Sélecteur de joueurs */
+.player-selection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    width: 100%;
+    max-width: 100%;
+}
+
+.player-selection .row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.player-btn {
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--text-light);
+    padding: 12px 8px;
+    font-size: 0.9em;
+    cursor: pointer;
+    border-radius: var(--button-radius);
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    min-width: 0;
+    width: 100%;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (min-width: 480px) {
+    .player-btn {
+        padding: 12px 15px;
+        font-size: 1em;
+    }
+}
+
+@media (min-width: 768px) {
+    .player-btn {
+        padding: 15px 25px;
+        font-size: 1.1em;
+    }
+}
+
+.player-btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Zone de saisie des noms */
+#name-entry {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-sm);
+    box-sizing: border-box;
+}
+
+#player-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+    margin: var(--spacing-md) 0;
+}
+
+@media (min-width: 480px) {
+    #player-form {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 768px) {
+    #player-form {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+input[type="text"] {
+    padding: 12px 20px;
+    border: 2px solid transparent;
+    border-radius: var(--button-radius);
+    font-size: 1em;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    transition: all var(--transition-speed) ease;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Colonnes des équipes */
+.team-column {
+    display: none;
+    margin: var(--spacing-sm) 0;
+    padding: var(--spacing-md);
+    background-color: rgba(255, 102, 0, 0.15);
+    border-radius: var(--border-radius);
+    width: 100%;
+    box-sizing: border-box;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 600px) {
+    #teams-display {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--spacing-md);
+        width: 100%;
+    }
+    
+    .team-column {
+        flex: 1;
+        min-width: 250px;
+        max-width: 400px;
+        margin: 0;
+    }
+}
+
+#teams-display:not(.hidden) .team-column {
+    display: block;
+    animation: fadeIn var(--transition-speed) ease;
+}
+
+.team-column h2 {
+    color: var(--secondary-color);
+    margin-bottom: var(--spacing-md);
+    font-size: 1.5em;
+}
+
+/* Boutons d'action */
+#submit-names, #reshuffle-teams, #start-round,
+#start-concertation, #start-direct-impro,
+#vote-btn, #null-round-btn, #next-round-btn {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: none;
+    padding: 12px 25px;
+    border-radius: var(--button-radius);
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin: var(--spacing-sm);
+    font-weight: 500;
+}
+
+#submit-names:hover, #reshuffle-teams:hover, #start-round:hover,
+#start-concertation:hover, #start-direct-impro:hover,
+#vote-btn:hover, #null-round-btn:hover, #next-round-btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Boutons masqués par défaut */
+#reshuffle-teams, #start-round {
+    display: none;
+}
+
+#teams-display:not(.hidden) #reshuffle-teams,
+#teams-display:not(.hidden) #start-round {
+    display: inline-block;
+}
+
+/* Section de configuration des manches */
+#round-setup {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-sm);
+    box-sizing: border-box;
+}
+
+#round-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+#round-form > div {
+    width: 100%;
+}
+
+/* Button container for round setup */
+#round-form .button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+#round-form .button-group button {
+    flex: 1 1 120px;
+    min-width: 120px;
+}
+
+select {
+    padding: 12px 20px;
+    border-radius: var(--button-radius);
+    border: 2px solid transparent;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    font-size: 1em;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    width: 100%;
+    margin-bottom: var(--spacing-sm);
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Timer et sections de jeu */
+#countdown, #impro-summary, #impro-timer {
+    width: 100%;
+    max-width: 600px;
+    margin: var(--spacing-md) auto;
+    padding: var(--spacing-md);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    backdrop-filter: blur(10px);
+}
+
+#impro-summary-content {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+#impro-details {
+    margin: 0;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Classes utilitaires */
+.hidden {
+    display: none !important;
+}
+
+/* Section de vote */
+#teams-vote {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    margin: var(--spacing-md) 0;
+    width: 100%;
+}
+
+.team-card {
+    background-color: var(--background-dark);
+    color: var(--text-light);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    min-width: 250px;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    position: relative;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.team-card h3 {
+    color: var(--secondary-color);
+    margin: 0;
+    font-size: 1.4em;
+}
+
+.team-card p {
+    margin: var(--spacing-sm) 0;
+    font-size: 1.1em;
+}
+
+.team-card::after {
+    content: "Voter";
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 5px 20px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    opacity: 0;
+    transition: all var(--transition-speed) ease;
+}
+
+.team-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.team-card:hover::after {
+    opacity: 1;
+    bottom: -20px;
+}
+
+.team-card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Points display in team card */
+.team-card p:last-child {
+    color: var(--secondary-color);
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+/* Improve touch targets for mobile */
+button, [role="button"] {
+    touch-action: manipulation;
+}
+
+/* Prevent zoom on input focus on mobile */
+@media screen and (max-width: 768px) {
+    input, select, textarea {
+        font-size: 16px !important;
+    }
+}
+
+/* Ensure content is not hidden behind mobile browser UI */
+@supports (padding: max(0px)) {
+    body {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    :root {
+        --spacing-lg: 20px;
+        --spacing-md: 15px;
+        --spacing-sm: 8px;
+    }
+
+    body {
+        padding: 0;
+        min-height: 100vh;
+    }
+
+    .container {
+        margin: 0;
+        border-radius: 0;
+        min-height: 100vh;
+        padding: 60px var(--spacing-sm) var(--spacing-lg);
+    }
+
+    header h1 {
+        font-size: 1.8em;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    header p {
+        font-size: 1em;
+        margin-bottom: var(--spacing-md);
+    }
+
+    /* Form elements */
+    select, input[type="text"] {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px 15px;
+    }
+
+    /* Buttons */
+    #submit-names, #reshuffle-teams, #start-round,
+    #start-concertation, #start-direct-impro,
+    #vote-btn, #null-round-btn, #next-round-btn {
+        width: 100%;
+        margin: 5px 0;
+        padding: 12px 15px;
+    }
+
+    /* Timer sections */
+    #countdown, #impro-summary, #impro-timer {
+        width: 100%;
+        margin: 10px 0;
+        padding: 15px;
+    }
+
+    /* Vote section */
+    #teams-vote {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+        padding: 0 var(--spacing-sm);
+    }
+
+    .team-card {
+        width: 100%;
+        min-width: unset;
+        margin: 5px 0;
+    }
+
+    /* Reset button */
+    #reset-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+}

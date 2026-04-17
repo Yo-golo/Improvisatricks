@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu d'Improvisation</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button id="reset-btn" title="Réinitialiser le jeu">↺</button>
+    <div class="container">
+        <!-- En-tête de la page -->
+        <header>
+            <h1>Bienvenue sur Improvisatricks</h1>
+            <p>Cliquez sur le nombre de joueurs pour commencer le match</p>
+        </header>
+
+        <!-- Sélecteur du nombre de joueurs -->
+        <section class="player-selection">
+            <div class="row">
+                <button class="player-btn" data-players="2">2 Joueurs</button>
+                <button class="player-btn" data-players="3">3 Joueurs</button>
+                <button class="player-btn" data-players="4">4 Joueurs</button>
+                <button class="player-btn" data-players="5">5 Joueurs</button>
+                <button class="player-btn" data-players="6">6 Joueurs</button>
+            </div>
+            <div class="row">
+                <button class="player-btn" data-players="7">7 Joueurs</button>
+                <button class="player-btn" data-players="8">8 Joueurs</button>
+                <button class="player-btn" data-players="9">9 Joueurs</button>
+                <button class="player-btn" data-players="10">10 Joueurs</button>
+                <button class="player-btn" data-players="12">12 Joueurs</button>
+            </div>
+        </section>
+
+        <!-- Zone de saisie des noms des joueurs -->
+        <section id="name-entry" class="hidden">
+            <h2>Entrez les noms des joueurs :</h2>
+            <form id="player-form"></form>
+            <button id="submit-names">Valider et Créer les Équipes</button>
+        </section>
+
+        <!-- Zone pour afficher les équipes constituées -->
+        <section id="teams-display" class="hidden">
+            <div class="team-column" id="team1-display"></div>
+            <div class="team-column" id="team2-display"></div>
+            <button id="reshuffle-teams" class="discreet">Re-mélanger les équipes</button>
+            <button id="start-round">OK</button>
+        </section>
+
+        <!-- Section de configuration des manches -->
+        <section id="round-setup" class="hidden">
+            <h2>Configuration de la Manche</h2>
+            <form id="round-form">
+                <div>
+                    <label for="duration">Durée de l'improvisation :</label>
+                    <select id="duration">
+                        <option value="30">30 secondes</option>
+                        <option value="60">1 minute</option>
+                        <option value="120">2 minutes</option>
+                        <option value="180">3 minutes</option>
+                        <option value="240">4 minutes</option>
+                        <option value="300">5 minutes</option>
+                        <option value="360">6 minutes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="players-per-team">Nombre de joueurs par équipe :</label>
+                    <select id="players-per-team">
+                        <!-- Les options seront générées dynamiquement en fonction de la taille des équipes -->
+                    </select>
+                </div>
+
+                <div>
+                    <label for="impro-type">Nature de l'improvisation :</label>
+                    <select id="impro-type">
+                        <option value="mixte">Mixte</option>
+                        <option value="comparee">Comparée</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="style">Style :</label>
+                    <select id="style">
+                        <!-- Options de style, à définir selon ta base de données -->
+                    </select>
+                </div>
+
+                <div>
+                    <label for="subject">Sujet :</label>
+                    <select id="subject">
+                        <!-- Options de sujet, à définir selon ta base de données -->
+                    </select>
+                </div>
+
+                <button id="randomize-round">Hasard</button>
+                <button id="start-concertation">Concertation</button>
+                <button id="start-direct-impro">Impro directe</button>
+            </form>
+        </section>
+
+        <!-- Section de compte à rebours pour la concertation -->
+        <section id="countdown" class="hidden">
+            <h2>Concertation en cours...</h2>
+            <p>Temps restant : <span id="timer">30</span> secondes</p>
+        </section>
+
+        <!-- Section de compte à rebours pour l'improvisation -->
+        <section id="impro-timer" class="hidden">
+            <h2>Improvisation en cours...</h2>
+            <div id="impro-summary-content">
+                <p id="impro-details"></p>
+            </div>
+            <p>Temps restant : <span id="impro-timer-display"></span></p>
+            <div class="timer-controls">
+                <button id="pause-resume-btn">Pause</button>
+                <button id="challenge-btn">Challenge</button>
+            </div>
+        </section>
+
+        <button id="vote-btn" class="hidden">Voter</button>
+
+        <section id="vote-section" class="hidden">
+            <h2>Vote pour la meilleure équipe</h2>
+            <div id="teams-vote">
+                <!-- Les cartes des équipes seront générées dynamiquement ici -->
+            </div>
+            <button id="null-round-btn">Manche nulle</button>
+            <button id="next-round-btn" class="hidden">Prochaine manche</button>
+        </section>
+
+        <!-- Bouton vers la page des styles d'improvisation -->
+        <section class="about-styles">
+            <button id="styles-info-btn" onclick="window.open('stylesimpro.html', '_blank', 'noopener,noreferrer')">À propos des styles d'impro</button>
+        </section>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
