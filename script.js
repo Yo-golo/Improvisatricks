@@ -660,7 +660,7 @@ async function playSound(audioObject) {
 // Fonction pour démarrer la concertation
 function startConcertation() {
     console.log('Starting concertation');
-    const duration = 20; // 20 secondes de concertation
+    const duration = 30; // 30 secondes de concertation
     
     // Masquer les sections non nécessaires
     toggleVisibility(DOM.roundSetupSection, false);
