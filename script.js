@@ -53,6 +53,7 @@ const DOM = {
     reshuffleTeamsBtn: null,
     teamsVoteContainer: null,
     challengeBtn: null,
+    endImproBtn: null,
     pauseResumeBtn: null,
     resetBtn: null,
     nullRoundBtn: null,
@@ -113,6 +114,7 @@ function initializeDOMElements() {
     DOM.submitNamesBtn = document.getElementById('submit-names');
     DOM.reshuffleTeamsBtn = document.getElementById('reshuffle-teams');
     DOM.challengeBtn = document.getElementById('challenge-btn');
+    DOM.endImproBtn = document.getElementById('end-impro-btn');
     DOM.pauseResumeBtn = document.getElementById('pause-resume-btn');
     DOM.resetBtn = document.getElementById('reset-btn');
     DOM.nullRoundBtn = document.getElementById('null-round-btn');
@@ -179,6 +181,17 @@ function setupEventListeners() {
             if (confirm('Voulez-vous vraiment réinitialiser le jeu ?')) {
                 resetGame();
             }
+        });
+    }
+
+    // Gestion du bouton Terminer
+    if (DOM.endImproBtn) {
+        DOM.endImproBtn.addEventListener('click', () => {
+            timeLeft = 10;
+            isPaused = false;
+            DOM.improTimerDisplay.textContent = formatTime(timeLeft);
+            playSound(audio10Sec);
+            DOM.endImproBtn.style.display = 'none';
         });
     }
 
@@ -367,6 +380,7 @@ function startDirectImpro() {
     // Masquer les contrôles du timer pour l'instant
     if (DOM.pauseResumeBtn) DOM.pauseResumeBtn.style.display = 'none';
     if (DOM.challengeBtn) DOM.challengeBtn.style.display = 'none';
+    if (DOM.endImproBtn) DOM.endImproBtn.style.display = 'none';
     
     // Afficher le bouton de démarrage
     if (DOM.startImproBtn) {
@@ -401,6 +415,7 @@ function endConcertation() {
     // Masquer les contrôles du timer pour l'instant
     if (DOM.pauseResumeBtn) DOM.pauseResumeBtn.style.display = 'none';
     if (DOM.challengeBtn) DOM.challengeBtn.style.display = 'none';
+    if (DOM.endImproBtn) DOM.endImproBtn.style.display = 'none';
     
     // Afficher le bouton de démarrage
     if (DOM.startImproBtn) {
@@ -416,7 +431,8 @@ function startImprovisation() {
     // Afficher les contrôles du timer
     if (DOM.pauseResumeBtn) DOM.pauseResumeBtn.style.display = 'block';
     if (DOM.challengeBtn) DOM.challengeBtn.style.display = 'block';
-    
+    if (DOM.endImproBtn) DOM.endImproBtn.style.display = 'block';
+
     // Masquer le bouton de démarrage
     if (DOM.startImproBtn) {
         DOM.startImproBtn.style.display = 'none';
