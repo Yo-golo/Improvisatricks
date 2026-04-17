@@ -14,6 +14,7 @@ const audio30Sec = new Audio('./snd/signal_30_sec.mp3');
 const audio10Sec = new Audio('./snd/signal_10_sec.mp3');
 const audioFinImpro = new Audio('./snd/fin_impro.mp3');
 const audioConcertation = new Audio('./snd/concertation.mp3');
+const audioDingStart = new Audio('./snd/ding-start.mp3');
 
 // Liste des challenges possibles
 const CHALLENGES = [
@@ -426,6 +427,7 @@ function endConcertation() {
 // Fonction pour démarrer l'improvisation
 function startImprovisation() {
     console.log('Starting improvisation');
+    playSound(audioDingStart);
     const duration = parseInt(DOM.durationSelect.value);
 
     // Afficher les contrôles du timer
