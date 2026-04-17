@@ -184,7 +184,10 @@ function setupEventListeners() {
 
     // Gestion du bouton Challenge
     if (DOM.challengeBtn) {
-        DOM.challengeBtn.addEventListener('click', handleChallenge);
+        DOM.challengeBtn.addEventListener('click', () => {
+            const challenge = CHALLENGES[Math.floor(Math.random() * CHALLENGES.length)];
+            alert(`Challenge : ${challenge}`);
+        });
     }
 
     // Gestion du bouton Pause/Reprise
@@ -198,15 +201,20 @@ function setupEventListeners() {
     // Gestionnaire de clic pour le bouton de validation des noms
     if (DOM.submitNamesBtn) {
         DOM.submitNamesBtn.addEventListener('click', () => {
-            players = Array.from(DOM.playerForm.querySelectorAll('input'))
+            console.log('=== CLIC VALIDER ===');
+            console.log('playerCount:', playerCount);
+            const inputs = Array.from(DOM.playerForm.querySelectorAll('input'));
+            console.log('inputs trouvés:', inputs.length);
+            players = inputs
                            .map(input => input.value.trim())
                            .filter(name => name.length > 0);
+            console.log('players:', players);
 
             if (players.length === playerCount) {
                 generateTeams();
                 saveGameState();
             } else {
-                alert('Veuillez entrer un nom pour chaque joueur.');
+                alert(`Problème : ${players.length} noms pour ${playerCount} joueurs`);
             }
         });
     }
