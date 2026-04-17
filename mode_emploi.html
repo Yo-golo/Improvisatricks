@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mode d'emploi — Improvisatricks</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mode_emploi.css">
+</head>
+<body>
+    <div class="container me-container">
+
+        <header>
+            <h1>Mode d'emploi</h1>
+            <p>Guide complet pour animer une partie d'Improvisatricks</p>
+        </header>
+
+        <!-- NOTE VIDÉO : les balises .scene-marker sont des repères pour le montage.
+             Supprimer la ligne <link rel="stylesheet" href="mode_emploi.css"> et ajouter
+             .scene-marker { display: none; } dans le CSS pour la version publique. -->
+
+        <nav class="me-toc">
+            <h3>Sommaire</h3>
+            <ol>
+                <li><a href="#intro">Introduction</a></li>
+                <li><a href="#joueurs">Choisir le nombre de joueurs</a></li>
+                <li><a href="#noms">Saisir les noms</a></li>
+                <li><a href="#equipes">Formation des équipes</a></li>
+                <li><a href="#manche">Configurer la manche</a></li>
+                <li><a href="#concertation">La concertation</a></li>
+                <li><a href="#impro">L'improvisation</a></li>
+                <li><a href="#challenges">Les challenges</a></li>
+                <li><a href="#vote">Le vote</a></li>
+                <li><a href="#scores">Les scores et la victoire</a></li>
+                <li><a href="#reset">Réinitialiser le jeu</a></li>
+            </ol>
+        </nav>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="me-section" id="intro">
+            <span class="scene-marker">SCÈNE 1 — Introduction et page d'accueil</span>
+            <h2>Introduction</h2>
+            <p>Improvisatricks est une application web conçue pour animer des matchs d'improvisation théâtrale. Elle prend en charge toute la logistique d'une partie : formation des équipes, tirage au sort des paramètres, chronomètre, gestion des scores et désignation du vainqueur.</p>
+            <p>L'application fonctionne entièrement dans le navigateur, sur ordinateur, tablette ou téléphone. Aucune installation n'est nécessaire. L'écran peut être projeté sur un vidéoprojecteur ou partagé avec les joueurs.</p>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="me-section" id="joueurs">
+            <span class="scene-marker">SCÈNE 2 — Sélection du nombre de joueurs</span>
+            <h2>1. Choisir le nombre de joueurs</h2>
+            <p>La première chose à faire est de sélectionner le nombre total de participants. Dix options sont disponibles : <strong>2, 3, 4, 5, 6, 7, 8, 9, 10 ou 12 joueurs</strong>.</p>
+            <div class="me-rule">
+                Quelle que soit la configuration choisie, le jeu formera toujours <strong>deux équipes</strong>. Le nombre de joueurs est réparti équitablement entre elles au moment du tirage.
+            </div>
+            <p>Cliquez sur le bouton correspondant au nombre de participants présents. L'écran passe immédiatement à la saisie des noms.</p>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="me-section" id="noms">
+            <span class="scene-marker">SCÈNE 3 — Saisie des noms des joueurs</span>
+            <h2>2. Saisir les noms des joueurs</h2>
+            <p>Un formulaire apparaît avec autant de champs que de joueurs sélectionnés. Chaque champ est pré-rempli avec "Joueur 1", "Joueur 2", etc. Vous pouvez laisser ces noms par défaut ou les remplacer par les vrais prénoms des participants.</p>
+            <div class="me-tip">
+                <strong>Conseil :</strong> Entrez les prénoms réels des joueurs pour que l'affichage des équipes et le vote soient plus clairs pour tout le monde.
+            </div>
+            <p>Cliquez sur <strong>Valider et Créer les Équipes</strong> une fois tous les champs renseignés. L'application vérifie que le nombre de noms correspond exactement au nombre de joueurs choisi. Si un champ est vide, un avertissement s'affiche et la saisie est bloquée jusqu'à correction.</p>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="me-section" id="equipes">
+            <span class="scene-marker">SCÈNE 4 — Formation et affichage des équipes</span>
+            <h2>3. Formation des équipes</h2>
+            <p>L'application mélange les joueurs aléatoirement puis les répartit en alternant les attributions : le premier tiré va en Équipe 1, le deuxième en Équipe 2, le troisième en Équipe 1, et ainsi de suite. Les équipes sont toujours équilibrées à un joueur près.</p>
+            <p>Les deux équipes s'affichent côte à côte sur écran large, ou l'une sous l'autre sur mobile. Le <strong>tableau des scores</strong> apparaît en haut à gauche et restera visible tout au long du match.</p>
+            <div class="me-rule">
+                Si la répartition ne convient pas, cliquez sur <strong>Re-mélanger les équipes</strong> pour relancer un nouveau tirage, autant de fois que souhaité.
+            </div>
+            <p>Lorsque les équipes sont satisfaisantes, cliquez sur <strong>OK</strong> pour passer à la configuration de la première manche.</p>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="me-section" id="manche">
+            <span class="scene-marker">SCÈNE 5 — Configuration de la manche</span>
+            <h2>4. Configurer la manche</h2>
+            <p>Avant chaque improvisation, quatre paramètres sont à définir. Ils peuvent être choisis manuellement ou tous tirés au sort en un seul clic.</p>
+
+            <div class="me-param">
+                <h4>Durée de l'improvisation</h4>
+                <p>Sept durées disponibles : 30 secondes, 1 min, 2 min, 3 min, 4 min, 5 min ou 6 min.</p>
+            </div>
+
+            <div class="me-param">
+                <h4>Nombre de joueurs par équipe</h4>
+                <p>De 1 joueur jusqu'au maximum possible selon la taille des équipes (la moitié du total). Par défaut, tous les joueurs de chaque équipe participent. Les joueurs non sélectionnés constituent la <em>réserve</em>.</p>
+            </div>
+
+            <div class="me-param">
+                <h4>Nature de l'improvisation</h4>
+                <p>Deux options :</p>
+                <ul>
+                    <li><strong>Mixte</strong> — les deux équipes jouent ensemble sur scène en même temps.</li>
+                    <li><strong>Comparée</strong> — chaque équipe joue séparément, on compare les deux performances.</li>
+                </ul>
+            </div>
+
+            <div class="me-param">
+                <h4>Style <span class="me-inline-badge">ⓘ</span></h4>
+                <p>Sélectionné depuis une liste de styles d'improvisation. Le style définit l'ambiance ou la contrainte artistique à respecter. Cliquez sur le bouton <strong>ⓘ</strong> à côté du label "Style" pour ouvrir le guide des styles dans un panneau superposé, sans quitter la partie en cours.</p>
+            </div>
+
+            <div class="me-param">
+                <h4>Sujet</h4>
+                <p>Sélectionné depuis une liste de sujets. C'est le thème ou le point de départ narratif de l'improvisation.</p>
+            </div>
+
+            <div class="me-tip">
+                <strong>Le bouton Hasard</strong> tire aléatoirement l'ensemble des paramètres en un seul clic : durée, nature, style et sujet sont tous randomisés simultanément.
+            </div>
+
+            <p>Une fois la configuration prête, deux modes de démarrage sont proposés :</p>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="me-section" id="concertation">
+            <span class="scene-marker">SCÈNE 6 — La concertation</span>
+            <h2>5. La concertation</h2>
+            <p>Cliquez sur <strong>Concertation</strong> pour accorder aux équipes un temps de préparation avant de monter sur scène. Un compte à rebours de <strong>30 secondes fixes</strong> démarre automatiquement, accompagné d'un son de départ.</p>
+            <p>Pendant ce temps, les joueurs désignés pour la manche peuvent se concerter discrètement. Les joueurs en réserve ne participent pas à cette phase.</p>
+            <p>À la fin des 30 secondes, l'application passe automatiquement à l'écran d'improvisation.</p>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="me-section" id="impro">
+            <span class="scene-marker">SCÈNE 7 — L'improvisation</span>
+            <h2>6. L'improvisation</h2>
+            <p>Cliquez sur <strong>Impro directe</strong> pour sauter la phase de concertation et aller directement au chronomètre. Utile pour les impros spontanées ou les formats qui n'en ont pas besoin.</p>
+            <p>Dans les deux cas, un écran récapitulatif s'affiche avec le résumé complet de la manche : durée, joueurs par équipe, nature, style et sujet. Cliquez sur <strong>Démarrer l'improvisation</strong> pour lancer le chronomètre. Un son de départ retentit.</p>
+
+            <h3>Pendant l'improvisation</h3>
+            <p>Trois boutons de contrôle sont disponibles :</p>
+            <ul>
+                <li><strong>Pause / Reprise</strong> — Gèle le chronomètre. Cliquer de nouveau le relance. Utile en cas d'interruption imprévue sur scène.</li>
+                <li><strong>Challenge</strong> — Tire au hasard une contrainte dans la liste et l'affiche dans une fenêtre. Les joueurs sur scène doivent l'intégrer immédiatement sans interrompre l'impro.</li>
+                <li><strong>Terminer</strong> — Force la fin imminente : le chronomètre est ramené à <strong>10 secondes</strong> et le signal sonore des 10 secondes retentit. Ce bouton disparaît après activation.</li>
+            </ul>
+
+            <h3>Signaux sonores automatiques</h3>
+            <ul>
+                <li>Au démarrage : son de coup d'envoi</li>
+                <li>À 30 secondes restantes : signal d'avertissement</li>
+                <li>À 10 secondes restantes : signal d'urgence</li>
+                <li>À la fin du temps : son de clôture</li>
+            </ul>
+
+            <div class="me-tip">
+                Le bouton <strong>Voter</strong> apparaît automatiquement 5 secondes après la fin du chronomètre, laissant le temps aux applaudissements avant de passer au vote.
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="me-section" id="challenges">
+            <span class="scene-marker">SCÈNE 8 — Les challenges</span>
+            <h2>7. Les challenges</h2>
+            <p>Le bouton Challenge tire aléatoirement l'une des dix contraintes suivantes, affichée dans une fenêtre sur l'écran :</p>
+            <ul class="me-challenge-list">
+                <li>À cloche-pied</li>
+                <li>Avec l'accent canadien</li>
+                <li>Parler en vers</li>
+                <li>En accéléré</li>
+                <li>Muet</li>
+                <li>Roman photo</li>
+                <li>Avec l'accent américain</li>
+                <li>Avec l'accent pied-noir</li>
+                <li>Tout le monde assis</li>
+                <li>Toute la réserve entre en scène</li>
+            </ul>
+            <p>La contrainte s'applique immédiatement et sans interruption de l'improvisation.</p>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="me-section" id="vote">
+            <span class="scene-marker">SCÈNE 9 — Le vote</span>
+            <h2>8. Le vote</h2>
+            <p>À la fin de l'improvisation, cliquez sur <strong>Voter</strong> pour accéder à l'écran de vote. Deux cartes d'équipe s'affichent avec leurs noms et leur score actuel.</p>
+            <p>Cliquez sur la carte de l'équipe qui a remporté la manche : elle reçoit <strong>1 point</strong>. Deux options complémentaires sont disponibles :</p>
+            <ul>
+                <li><strong>Manche nulle</strong> — Aucun point attribué. On passe directement à la manche suivante sans modifier les scores.</li>
+                <li><strong>Prochaine manche</strong> — Apparaît après un vote ou une manche nulle. Ramène à l'écran de configuration pour lancer la manche suivante, sans remettre les équipes à zéro.</li>
+            </ul>
+            <div class="me-tip">
+                Les scores sont visibles en permanence en haut à gauche de l'écran sous la forme <em>Éq. 1 : X | Éq. 2 : Y</em>.
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="me-section" id="scores">
+            <span class="scene-marker">SCÈNE 10 — Les scores et la victoire</span>
+            <h2>9. Les scores et la victoire</h2>
+            <p>Chaque vote ajoute 1 point à l'équipe gagnante. Les scores s'accumulent de manche en manche tout au long du match.</p>
+            <div class="me-rule">
+                La première équipe à atteindre <strong>5 points</strong> remporte le match. Une fenêtre de victoire s'affiche avec le nom de l'équipe gagnante, puis le jeu se réinitialise automatiquement pour une nouvelle partie.
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════ -->
+        <section class="me-section" id="reset">
+            <span class="scene-marker">SCÈNE 11 — Réinitialiser et reprendre une partie</span>
+            <h2>10. Réinitialiser le jeu</h2>
+            <p>Le bouton <strong>↺</strong> en haut à droite de l'écran permet de réinitialiser complètement le jeu à tout moment. Une confirmation est demandée avant d'effacer la partie en cours. La réinitialisation remet à zéro les équipes, les scores et tous les paramètres.</p>
+            <div class="me-tip">
+                <strong>Reprise automatique :</strong> si vous rechargez accidentellement la page en cours de partie, le jeu restaure automatiquement l'état sauvegardé (équipes et scores) grâce à la mémoire locale du navigateur.
+            </div>
+        </section>
+
+        <footer class="me-footer">
+            <button class="me-back-btn" onclick="window.close()">Retour au jeu</button>
+        </footer>
+
+    </div>
+</body>
+</html>

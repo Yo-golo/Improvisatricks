@@ -1,3 +1,26 @@
+// Drawer styles d'improvisation
+function openStylesDrawer() {
+    document.getElementById('styles-drawer').classList.add('open');
+    document.getElementById('drawer-backdrop').classList.add('open');
+    document.getElementById('styles-drawer').setAttribute('aria-hidden', 'false');
+}
+
+function closeStylesDrawer() {
+    document.getElementById('styles-drawer').classList.remove('open');
+    document.getElementById('drawer-backdrop').classList.remove('open');
+    document.getElementById('styles-drawer').setAttribute('aria-hidden', 'true');
+}
+
+window.addEventListener('message', e => {
+    if (e.data === 'close-styles-drawer') closeStylesDrawer();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('styles-info-btn')?.addEventListener('click', openStylesDrawer);
+    document.getElementById('drawer-close-btn')?.addEventListener('click', closeStylesDrawer);
+    document.getElementById('drawer-backdrop')?.addEventListener('click', closeStylesDrawer);
+});
+
 // Système de modale custom
 function showModal({ title, message, icon, buttons }) {
     return new Promise(resolve => {
@@ -52,6 +75,8 @@ let playerCount = 0;
 let players = [];
 let teams = [];
 let scores = [0, 0]; // Initialisation des scores pour les deux équipes
+let roundNumber = 0;
+let selectedVoteIndex = null;
 
 // Variables pour gérer l'état de pause
 let isPaused = false;
@@ -348,17 +373,16 @@ function setupEventListeners() {
         DOM.voteBtn.addEventListener('click', displayVoteOptions);
     }
 
-    // Gestion du bouton "Manche nulle"
-    if (DOM.nullRoundBtn) {
-        DOM.nullRoundBtn.addEventListener('click', () => {
-            toggleVisibility(DOM.nullRoundBtn, false);
-            toggleVisibility(DOM.nextRoundBtn, true);
-        });
-    }
-
-    // Gestion du bouton "Prochaine manche"
+    // Gestion du bouton "Prochaine manche" (confirme le vote sélectionné)
     if (DOM.nextRoundBtn) {
-        DOM.nextRoundBtn.addEventListener('click', resetRoundSetup);
+        DOM.nextRoundBtn.addEventListener('click', async () => {
+            if (selectedVoteIndex !== null) {
+                scores[selectedVoteIndex]++;
+                updateScoreDisplay();
+                if (await checkForWinner()) return;
+            }
+            resetRoundSetup();
+        });
     }
 }
 
@@ -388,8 +412,9 @@ function showRoundSetup() {
     toggleVisibility(DOM.roundSetupSection, true);
     
     // Update header text
+    roundNumber++;
     DOM.headerTitle.textContent = 'Improvisatricks';
-    DOM.headerSubtitle.textContent = 'Match en cours';
+    DOM.headerSubtitle.textContent = `Match en cours — Manche N°${roundNumber}`;
     
     // Mise à jour du sélecteur de joueurs par équipe
     const maxPlayersPerTeam = Math.floor(playerCount / 2);
@@ -532,21 +557,32 @@ function startImprovisation() {
 
 // Fonction pour afficher les options de vote pour les équipes
 function displayVoteOptions() {
+    selectedVoteIndex = null;
     toggleVisibility(DOM.improTimerSection, false);
     toggleVisibility(DOM.voteBtn, false);
     toggleVisibility(DOM.voteSection, true);
+    toggleVisibility(DOM.nullRoundBtn, false);
+    toggleVisibility(DOM.nextRoundBtn, false);
 
     const teamsVoteContainer = document.getElementById('teams-vote');
     teamsVoteContainer.innerHTML = '';
 
-    teams.forEach((team, index) => {
-        const teamCard = createTeamCard(index, team, scores[index]);
-        teamsVoteContainer.appendChild(teamCard);
-    });
+    teamsVoteContainer.appendChild(createTeamCard(0, teams[0], scores[0]));
 
-    // Afficher le bouton de manche nulle
-    toggleVisibility(DOM.nullRoundBtn, true);
-    toggleVisibility(DOM.nextRoundBtn, false);
+    // Bouton "Match nul" entre les deux cartes
+    const nullBtn = document.createElement('button');
+    nullBtn.className = 'btn-null-inline';
+    nullBtn.textContent = 'Match nul';
+    nullBtn.addEventListener('click', async () => {
+        scores[0]++;
+        scores[1]++;
+        updateScoreDisplay();
+        if (await checkForWinner()) return;
+        resetRoundSetup();
+    });
+    teamsVoteContainer.appendChild(nullBtn);
+
+    teamsVoteContainer.appendChild(createTeamCard(1, teams[1], scores[1]));
 }
 
 // Fonction pour créer une carte d'équipe
@@ -558,31 +594,38 @@ function createTeamCard(index, team, score) {
         <p>${team.join(', ')}</p>
         ${score > 0 ? `<p>Points: ${score}</p>` : ''}
     `;
-    
-    // Ajouter l'événement de vote
-    teamCard.addEventListener('click', () => {
-        scores[index]++;
-        updateScoreDisplay();
-        checkForWinner();
+
+    teamCard.addEventListener('click', async () => {
+        if (scores[index] + 1 >= 5) {
+            scores[index]++;
+            updateScoreDisplay();
+            await checkForWinner();
+            return;
+        }
+        document.querySelectorAll('#teams-vote .team-card').forEach(c => c.classList.remove('selected'));
+        teamCard.classList.add('selected');
+        selectedVoteIndex = index;
+        toggleVisibility(DOM.nextRoundBtn, true);
     });
-    
+
     return teamCard;
 }
 
-// Fonction pour vérifier si une équipe a gagné
+// Fonction pour vérifier si une équipe a gagné — retourne true si la partie est terminée
 async function checkForWinner() {
     const winningTeamIndex = scores.findIndex(score => score >= 5);
     if (winningTeamIndex >= 0) {
         await showAlert(`L'équipe ${winningTeamIndex + 1} a gagné !`, 'Victoire !', '🏆');
         resetGame();
-    } else {
-        toggleVisibility(document.getElementById('null-round-btn'), false);
-        toggleVisibility(document.getElementById('next-round-btn'), true);
+        return true;
     }
+    return false;
 }
 
 // Fonction pour réinitialiser la configuration de la manche pour la prochaine manche
 function resetRoundSetup() {
+    roundNumber++;
+    DOM.headerSubtitle.textContent = `Match en cours — Manche N°${roundNumber}`;
     toggleVisibility(DOM.voteSection, false);
     toggleVisibility(DOM.improTimerSection, false);
     toggleVisibility(DOM.improSummarySection, false);
@@ -598,6 +641,8 @@ function resetGame() {
     players = [];
     teams = [];
     scores = [0, 0];
+    roundNumber = 0;
+    selectedVoteIndex = null;
     isPaused = false;
     
     // Réinitialisation de l'affichage
