@@ -1,1 +1,5 @@
 node_modules/
+.DS_Store
+.cache/
+.claude/
+replit_zip_error_log.txt
