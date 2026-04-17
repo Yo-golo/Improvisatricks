@@ -38,15 +38,19 @@
         <section id="name-entry" class="hidden">
             <h2>Entrez les noms des joueurs :</h2>
             <div id="player-form"></div>
-            <button id="submit-names" type="button">Valider et Créer les Équipes</button>
+            <div class="btn-row">
+                <button id="submit-names" type="button">Valider et Créer les Équipes</button>
+            </div>
         </section>
 
         <!-- Zone pour afficher les équipes constituées -->
         <section id="teams-display" class="hidden">
             <div class="team-column" id="team1-display"></div>
             <div class="team-column" id="team2-display"></div>
-            <button id="reshuffle-teams" class="discreet">Re-mélanger les équipes</button>
-            <button id="start-round">OK</button>
+            <div class="btn-row">
+                <button id="reshuffle-teams" class="btn-secondary">Re-mélanger les équipes</button>
+                <button id="start-round">OK</button>
+            </div>
         </section>
 
         <!-- Section de configuration des manches -->
@@ -68,9 +72,7 @@
 
                 <div>
                     <label for="players-per-team">Nombre de joueurs par équipe :</label>
-                    <select id="players-per-team">
-                        <!-- Les options seront générées dynamiquement en fonction de la taille des équipes -->
-                    </select>
+                    <select id="players-per-team"></select>
                 </div>
 
                 <div>
@@ -83,21 +85,19 @@
 
                 <div>
                     <label for="style">Style :</label>
-                    <select id="style">
-                        <!-- Options de style, à définir selon ta base de données -->
-                    </select>
+                    <select id="style"></select>
                 </div>
 
                 <div>
                     <label for="subject">Sujet :</label>
-                    <select id="subject">
-                        <!-- Options de sujet, à définir selon ta base de données -->
-                    </select>
+                    <select id="subject"></select>
                 </div>
 
-                <button id="randomize-round" type="button">Hasard</button>
-                <button id="start-concertation" type="button">Concertation</button>
-                <button id="start-direct-impro" type="button">Impro directe</button>
+                <div class="btn-row">
+                    <button id="randomize-round" type="button" class="btn-secondary">Hasard</button>
+                    <button id="start-concertation" type="button">Concertation</button>
+                    <button id="start-direct-impro" type="button">Impro directe</button>
+                </div>
             </form>
         </section>
 
@@ -113,29 +113,33 @@
             <div id="impro-summary-content">
                 <p id="impro-details"></p>
             </div>
-            <button id="start-impro" type="button">Démarrer l'improvisation</button>
+            <div class="btn-row">
+                <button id="start-impro" type="button">Démarrer l'improvisation</button>
+            </div>
             <p>Temps restant : <span id="impro-timer-display"></span></p>
-            <div class="timer-controls">
-                <button id="pause-resume-btn" type="button">Pause</button>
-                <button id="challenge-btn" type="button">Challenge</button>
-                <button id="end-impro-btn" type="button">Terminer</button>
+            <div class="btn-row timer-controls">
+                <button id="pause-resume-btn" type="button" class="btn-secondary">Pause</button>
+                <button id="challenge-btn" type="button" class="btn-secondary">Challenge</button>
+                <button id="end-impro-btn" type="button" class="btn-danger">Terminer</button>
             </div>
         </section>
 
-        <button id="vote-btn" class="hidden">Voter</button>
+        <div class="btn-row">
+            <button id="vote-btn" class="hidden">Voter</button>
+        </div>
 
         <section id="vote-section" class="hidden">
             <h2>Vote pour la meilleure équipe</h2>
-            <div id="teams-vote">
-                <!-- Les cartes des équipes seront générées dynamiquement ici -->
+            <div id="teams-vote"></div>
+            <div class="btn-row">
+                <button id="null-round-btn" class="btn-secondary">Manche nulle</button>
+                <button id="next-round-btn" class="hidden">Prochaine manche</button>
             </div>
-            <button id="null-round-btn">Manche nulle</button>
-            <button id="next-round-btn" class="hidden">Prochaine manche</button>
         </section>
 
         <!-- Bouton vers la page des styles d'improvisation -->
         <section class="about-styles">
-            <button id="styles-info-btn" onclick="window.open('stylesimpro.html', '_blank', 'noopener,noreferrer')">À propos des styles d'impro</button>
+            <button id="styles-info-btn" class="btn-secondary" onclick="window.open('stylesimpro.html', '_blank', 'noopener,noreferrer')">À propos des styles d'impro</button>
         </section>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>

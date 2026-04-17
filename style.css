@@ -243,10 +243,21 @@ input[type="text"]:focus {
     font-size: 1.5em;
 }
 
-/* Boutons d'action */
-#submit-names, #reshuffle-teams, #start-round,
+/* Rangée de boutons */
+.btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+    margin-top: var(--spacing-sm);
+}
+
+/* Boutons principaux */
+#submit-names, #start-round, #start-impro,
 #start-concertation, #start-direct-impro,
-#vote-btn, #null-round-btn, #next-round-btn {
+#vote-btn, #next-round-btn {
     background-color: var(--primary-color);
     color: var(--text-light);
     border: none;
@@ -256,16 +267,55 @@ input[type="text"]:focus {
     cursor: pointer;
     transition: all var(--transition-speed) ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    margin: var(--spacing-sm);
     font-weight: 500;
 }
 
-#submit-names:hover, #reshuffle-teams:hover, #start-round:hover,
+#submit-names:hover, #start-round:hover, #start-impro:hover,
 #start-concertation:hover, #start-direct-impro:hover,
-#vote-btn:hover, #null-round-btn:hover, #next-round-btn:hover {
+#vote-btn:hover, #next-round-btn:hover {
     background-color: var(--secondary-color);
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Boutons secondaires */
+.btn-secondary {
+    background-color: #2980b9;
+    color: var(--text-light);
+    border: none;
+    padding: 9px 18px;
+    border-radius: var(--button-radius);
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background-color: #3498db;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Bouton danger */
+.btn-danger {
+    background-color: #c0392b;
+    color: var(--text-light);
+    border: none;
+    padding: 9px 18px;
+    border-radius: var(--button-radius);
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    font-weight: 500;
+}
+
+.btn-danger:hover {
+    background-color: #e74c3c;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Boutons masqués par défaut */
@@ -498,12 +548,20 @@ button, [role="button"] {
     }
 
     /* Buttons */
-    #submit-names, #reshuffle-teams, #start-round,
+    #submit-names, #start-round, #start-impro,
     #start-concertation, #start-direct-impro,
-    #vote-btn, #null-round-btn, #next-round-btn {
+    #vote-btn, #next-round-btn {
         width: 100%;
-        margin: 5px 0;
         padding: 12px 15px;
+    }
+
+    .btn-secondary, .btn-danger {
+        flex: 1 1 120px;
+        padding: 10px 12px;
+    }
+
+    .btn-row {
+        gap: 8px;
     }
 
     /* Timer sections */
