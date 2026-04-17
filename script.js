@@ -57,6 +57,9 @@ const DOM = {
     endImproBtn: null,
     pauseResumeBtn: null,
     resetBtn: null,
+    scoreDisplay: null,
+    scoreTeam1: null,
+    scoreTeam2: null,
     nullRoundBtn: null,
     nextRoundBtn: null,
     durationSelect: null,
@@ -118,6 +121,9 @@ function initializeDOMElements() {
     DOM.endImproBtn = document.getElementById('end-impro-btn');
     DOM.pauseResumeBtn = document.getElementById('pause-resume-btn');
     DOM.resetBtn = document.getElementById('reset-btn');
+    DOM.scoreDisplay = document.getElementById('score-display');
+    DOM.scoreTeam1 = document.getElementById('score-team1');
+    DOM.scoreTeam2 = document.getElementById('score-team2');
     DOM.nullRoundBtn = document.getElementById('null-round-btn');
     DOM.nextRoundBtn = document.getElementById('next-round-btn');
     DOM.randomizeRoundBtn = document.getElementById('randomize-round');
@@ -507,6 +513,7 @@ function createTeamCard(index, team, score) {
     // Ajouter l'événement de vote
     teamCard.addEventListener('click', () => {
         scores[index]++;
+        updateScoreDisplay();
         checkForWinner();
     });
     
@@ -547,6 +554,7 @@ function resetGame() {
     // Réinitialisation de l'affichage
     toggleVisibility(DOM.playerSelectionSection, true);
     toggleVisibility(DOM.nameEntrySection, false);
+    toggleVisibility(DOM.scoreDisplay, false);
     toggleVisibility(DOM.teamsDisplaySection, false);
     toggleVisibility(DOM.roundSetupSection, false);
     toggleVisibility(DOM.countdownSection, false);
@@ -627,6 +635,11 @@ function populateSelect(selectId, data, key) {
         option.textContent = row[key].trim();
         select.appendChild(option);
     });
+}
+
+function updateScoreDisplay() {
+    if (DOM.scoreTeam1) DOM.scoreTeam1.textContent = `Éq. 1 : ${scores[0]}`;
+    if (DOM.scoreTeam2) DOM.scoreTeam2.textContent = `Éq. 2 : ${scores[1]}`;
 }
 
 // Formate un nombre de secondes en mm:ss
@@ -793,6 +806,8 @@ function generateTeams() {
 // Fonction pour afficher les équipes sur la page
 function displayTeams() {
     toggleVisibility(DOM.nameEntrySection, false);
+    toggleVisibility(DOM.scoreDisplay, true);
+    updateScoreDisplay();
 
     // Clear and update team displays
     DOM.team1Display.innerHTML = `<h2>Équipe 1</h2><p>${teams[0].join(', ')}</p>`;
