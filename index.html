@@ -37,8 +37,8 @@
         <!-- Zone de saisie des noms des joueurs -->
         <section id="name-entry" class="hidden">
             <h2>Entrez les noms des joueurs :</h2>
-            <form id="player-form"></form>
-            <button id="submit-names">Valider et Créer les Équipes</button>
+            <div id="player-form"></div>
+            <button id="submit-names" type="button">Valider et Créer les Équipes</button>
         </section>
 
         <!-- Zone pour afficher les équipes constituées -->
@@ -95,9 +95,9 @@
                     </select>
                 </div>
 
-                <button id="randomize-round">Hasard</button>
-                <button id="start-concertation">Concertation</button>
-                <button id="start-direct-impro">Impro directe</button>
+                <button id="randomize-round" type="button">Hasard</button>
+                <button id="start-concertation" type="button">Concertation</button>
+                <button id="start-direct-impro" type="button">Impro directe</button>
             </form>
         </section>
 
@@ -113,10 +113,11 @@
             <div id="impro-summary-content">
                 <p id="impro-details"></p>
             </div>
+            <button id="start-impro" type="button">Démarrer l'improvisation</button>
             <p>Temps restant : <span id="impro-timer-display"></span></p>
             <div class="timer-controls">
-                <button id="pause-resume-btn">Pause</button>
-                <button id="challenge-btn">Challenge</button>
+                <button id="pause-resume-btn" type="button">Pause</button>
+                <button id="challenge-btn" type="button">Challenge</button>
             </div>
         </section>
 

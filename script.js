@@ -198,7 +198,7 @@ function setupEventListeners() {
     // Gestionnaire de clic pour le bouton de validation des noms
     if (DOM.submitNamesBtn) {
         DOM.submitNamesBtn.addEventListener('click', () => {
-            players = Array.from(DOM.playerForm.elements)
+            players = Array.from(DOM.playerForm.querySelectorAll('input'))
                            .map(input => input.value.trim())
                            .filter(name => name.length > 0);
 
