@@ -464,6 +464,9 @@ function startImprovisation() {
             if (timeLeft <= 0) {
                 clearInterval(improInterval);
                 playSound(audioFinImpro);
+                if (DOM.pauseResumeBtn) DOM.pauseResumeBtn.style.display = 'none';
+                if (DOM.challengeBtn) DOM.challengeBtn.style.display = 'none';
+                if (DOM.endImproBtn) DOM.endImproBtn.style.display = 'none';
                 setTimeout(() => {
                     toggleVisibility(DOM.voteBtn, true);
                 }, 5000);
