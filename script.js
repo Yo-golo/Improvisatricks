@@ -422,7 +422,7 @@ function startImprovisation() {
         DOM.startImproBtn.style.display = 'none';
     }
     
-    DOM.improTimerDisplay.textContent = duration;
+    DOM.improTimerDisplay.textContent = formatTime(duration);
     timeLeft = duration;
 
     // Démarrage du compte à rebours
@@ -433,7 +433,7 @@ function startImprovisation() {
     improInterval = setInterval(() => {
         if (!isPaused) {
             timeLeft--;
-            DOM.improTimerDisplay.textContent = timeLeft;
+            DOM.improTimerDisplay.textContent = formatTime(timeLeft);
 
             if (timeLeft === 30) {
                 playSound(audio30Sec);
@@ -608,6 +608,13 @@ function populateSelect(selectId, data, key) {
     });
 }
 
+// Formate un nombre de secondes en mm:ss
+function formatTime(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
 // Fonction pour obtenir un élément aléatoire d'un tableau
 function getRandomItem(array) {
     return array[Math.floor(Math.random() * array.length)];
@@ -681,12 +688,12 @@ function startConcertation() {
 // Fonction pour démarrer le compte à rebours
 function startCountdown(duration, displayElement, callback) {
     let timeLeft = duration;
-    displayElement.textContent = timeLeft;
+    displayElement.textContent = formatTime(timeLeft);
 
     const countdownInterval = setInterval(() => {
         if (!isPaused) {
             timeLeft--;
-            displayElement.textContent = timeLeft;
+            displayElement.textContent = formatTime(timeLeft);
 
             if (timeLeft <= 0) {
                 clearInterval(countdownInterval);
