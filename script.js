@@ -77,6 +77,8 @@ let teams = [];
 let scores = [0, 0]; // Initialisation des scores pour les deux équipes
 let roundNumber = 0;
 let selectedVoteIndex = null;
+let compareePhase = 0;       // 0 = normal, 1 = équipe 1 en cours, 2 = équipe 2 en cours
+let compareeFirstTeam = 0;   // index (0 ou 1) de l'équipe qui joue en premier
 
 // Variables pour gérer l'état de pause
 let isPaused = false;
@@ -355,12 +357,24 @@ function setupEventListeners() {
 
     // Gérer le bouton "Concertation"
     if (DOM.startConcertationBtn) {
-        DOM.startConcertationBtn.addEventListener('click', startConcertation);
+        DOM.startConcertationBtn.addEventListener('click', async () => {
+            if (DOM.improTypeSelect.value === 'comparee' && compareePhase === 0) {
+                await handleCompareeSetup();
+            } else {
+                startConcertation();
+            }
+        });
     }
 
     // Gérer le bouton "Impro directe"
     if (DOM.startDirectImproBtn) {
-        DOM.startDirectImproBtn.addEventListener('click', startDirectImpro);
+        DOM.startDirectImproBtn.addEventListener('click', async () => {
+            if (DOM.improTypeSelect.value === 'comparee' && compareePhase === 0) {
+                await handleCompareeSetup();
+            } else {
+                startDirectImpro();
+            }
+        });
     }
 
     // Gestion du bouton "Démarrer l'impro"
@@ -548,12 +562,91 @@ function startImprovisation() {
                 if (DOM.challengeBtn) DOM.challengeBtn.style.display = 'none';
                 if (DOM.endImproBtn) DOM.endImproBtn.style.display = 'none';
                 setTimeout(() => {
-                    toggleVisibility(DOM.voteBtn, true);
+                    if (compareePhase === 1) {
+                        showCompareeTransition();
+                    } else {
+                        toggleVisibility(DOM.voteBtn, true);
+                    }
                 }, 5000);
             }
         }
     }, 1000);
 }
+
+// ── Impro comparée ──────────────────────────────────────────────────────────
+
+// Modale 1 : choix de l'équipe qui commence + mode de jeu
+async function handleCompareeSetup() {
+    // Étape 1 — Qui commence ?
+    const teamChoice = await showModal({
+        title: 'Impro comparée',
+        icon: '🔀',
+        message: `${teams[0].join(', ')}  vs  ${teams[1].join(', ')}\n\nQuelle équipe commence ?`,
+        buttons: [
+            { label: 'Équipe 1',    value: 0,        className: 'modal-btn-secondary' },
+            { label: '🎲 Au sort',  value: 'random', className: 'modal-btn-primary'   },
+            { label: 'Équipe 2',    value: 1,        className: 'modal-btn-secondary' }
+        ]
+    });
+
+    compareeFirstTeam = (teamChoice === 'random')
+        ? Math.floor(Math.random() * 2)
+        : Number(teamChoice);
+
+    // Étape 2 — Mode de jeu pour l'équipe 1
+    const modeChoice = await showModal({
+        title: `Équipe ${compareeFirstTeam + 1} commence`,
+        icon: '▶️',
+        message: `Mode de jeu pour l'Équipe ${compareeFirstTeam + 1} :`,
+        buttons: [
+            { label: 'Concertation',  value: 'concertation', className: 'modal-btn-secondary' },
+            { label: 'Impro directe', value: 'direct',       className: 'modal-btn-primary'   }
+        ]
+    });
+
+    compareePhase = 1;
+    DOM.headerSubtitle.textContent =
+        `Match en cours — Manche N°${roundNumber} · Impro comparée (1/2)`;
+
+    if (modeChoice === 'concertation') {
+        startConcertation();
+    } else {
+        startDirectImpro();
+    }
+}
+
+// Modale 2 : transition vers l'équipe 2 après la fin de la première impro
+async function showCompareeTransition() {
+    const secondTeam = 1 - compareeFirstTeam;
+    const style        = DOM.styleSelect.value;
+    const subject      = DOM.subjectSelect.value;
+    const duration     = DOM.durationSelect.value;
+    const playersPerTeam = DOM.playersPerTeamSelect.value;
+
+    const recap = `Style : ${style}\nSujet : ${subject}\nDurée : ${duration}s — ${playersPerTeam} joueur(s) par équipe`;
+
+    const modeChoice = await showModal({
+        title: `Au tour de l'Équipe ${secondTeam + 1}`,
+        icon: '🔀',
+        message: `Rappel de l'impro :\n${recap}\n\nMode de jeu pour l'Équipe ${secondTeam + 1} :`,
+        buttons: [
+            { label: 'Concertation',  value: 'concertation', className: 'modal-btn-secondary' },
+            { label: 'Impro directe', value: 'direct',       className: 'modal-btn-primary'   }
+        ]
+    });
+
+    compareePhase = 2;
+    DOM.headerSubtitle.textContent =
+        `Match en cours — Manche N°${roundNumber} · Impro comparée (2/2)`;
+
+    if (modeChoice === 'concertation') {
+        startConcertation();
+    } else {
+        startDirectImpro();
+    }
+}
+
+// ────────────────────────────────────────────────────────────────────────────
 
 // Fonction pour afficher les options de vote pour les équipes
 function displayVoteOptions() {
@@ -624,6 +717,7 @@ async function checkForWinner() {
 
 // Fonction pour réinitialiser la configuration de la manche pour la prochaine manche
 function resetRoundSetup() {
+    compareePhase = 0;
     roundNumber++;
     DOM.headerSubtitle.textContent = `Match en cours — Manche N°${roundNumber}`;
     toggleVisibility(DOM.voteSection, false);
@@ -643,6 +737,8 @@ function resetGame() {
     scores = [0, 0];
     roundNumber = 0;
     selectedVoteIndex = null;
+    compareePhase = 0;
+    compareeFirstTeam = 0;
     isPaused = false;
     
     // Réinitialisation de l'affichage
