@@ -93,6 +93,26 @@ const audioFinImpro = new Audio('./snd/fin_impro.mp3');
 const audioConcertation = new Audio('./snd/concertation.mp3');
 const audioDingStart = new Audio('./snd/ding-start.mp3');
 
+// Sur mobile (iOS/Android), l'AudioContext est bloqué tant qu'un geste
+// utilisateur direct ne l'a pas déverrouillé. On pré-joue silencieusement
+// tous les sons au premier tap pour les rendre disponibles ensuite.
+const ALL_SOUNDS = [audio30Sec, audio10Sec, audioFinImpro, audioConcertation, audioDingStart];
+
+function unlockAudio() {
+    ALL_SOUNDS.forEach(audio => {
+        const vol = audio.volume;
+        audio.volume = 0;
+        audio.play().then(() => {
+            audio.pause();
+            audio.currentTime = 0;
+            audio.volume = vol;
+        }).catch(() => {});
+    });
+}
+
+document.addEventListener('touchstart', unlockAudio, { once: true });
+document.addEventListener('click',      unlockAudio, { once: true });
+
 // Liste des challenges possibles
 const CHALLENGES = [
     'À cloche-pied',
