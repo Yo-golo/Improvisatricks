@@ -100,12 +100,11 @@ const ALL_SOUNDS = [audio30Sec, audio10Sec, audioFinImpro, audioConcertation, au
 
 function unlockAudio() {
     ALL_SOUNDS.forEach(audio => {
-        const vol = audio.volume;
-        audio.volume = 0;
+        audio.muted = true;
         audio.play().then(() => {
             audio.pause();
             audio.currentTime = 0;
-            audio.volume = vol;
+            audio.muted = false;
         }).catch(() => {});
     });
 }
