@@ -425,6 +425,15 @@ select {
     margin-bottom: var(--spacing-sm);
 }
 
+.impro-type-hint {
+    margin: -4px 0 8px;
+    font-size: 0.82em;
+    color: #ffcc00;
+    font-style: italic;
+    opacity: 0.85;
+    min-height: 1.2em;
+}
+
 select:focus {
     outline: none;
     border-color: var(--primary-color);

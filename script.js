@@ -326,6 +326,23 @@ function setupEventListeners() {
         DOM.startRoundBtn.addEventListener('click', showRoundSetup);
     }
 
+    // Description dynamique de la nature de l'impro
+    const improTypeHint = document.getElementById('impro-type-hint');
+    const IMPRO_TYPE_HINTS = {
+        'equipe-seule': 'Une seule équipe joue l\'impro.',
+        'mixte':        'L\'équipe adverse peut intervenir dans l\'impro.',
+        'comparee':     'Chaque équipe joue l\'impro l\'une après l\'autre.'
+    };
+    function updateImproTypeHint() {
+        if (improTypeHint && DOM.improTypeSelect) {
+            improTypeHint.textContent = IMPRO_TYPE_HINTS[DOM.improTypeSelect.value] || '';
+        }
+    }
+    if (DOM.improTypeSelect) {
+        DOM.improTypeSelect.addEventListener('change', updateImproTypeHint);
+        updateImproTypeHint(); // afficher dès le chargement
+    }
+
     // Gestion du bouton "Hasard"
     if (DOM.randomizeRoundBtn) {
         DOM.randomizeRoundBtn.addEventListener('click', () => {
@@ -353,6 +370,8 @@ function setupEventListeners() {
                 const randomDurationIndex = Math.floor(Math.random() * durationSelect.options.length);
                 durationSelect.selectedIndex = randomDurationIndex;
             }
+
+            updateImproTypeHint();
         });
     }
 
