@@ -974,13 +974,32 @@ button, [role="button"] {
         flex-direction: column;
         align-items: stretch;
         gap: var(--spacing-md);
-        padding: 0 var(--spacing-sm);
+        padding: 0;
+        overflow-x: hidden;
     }
 
     .team-card {
         width: 100%;
         min-width: unset;
+        max-width: 100%;
+        box-sizing: border-box;
         margin: 5px 0;
+    }
+
+    /* Sur mobile, les états :hover collent après un tap —
+       on supprime les transformations et le badge ::after */
+    .team-card:hover {
+        transform: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .team-card::after {
+        display: none;
+    }
+
+    /* Conserver l'effet visuel de sélection */
+    .team-card.selected {
+        transform: none;
     }
 
     /* Texte des équipes : pas de débordement */
