@@ -119,7 +119,6 @@ const DOM = {
     playersPerTeamSelect: null,
     countdownSection: null,
     timer: null,
-    improSummarySection: null,
     improDetails: null,
     improTimerSection: null,
     improTimerDisplay: null,
@@ -129,7 +128,6 @@ const DOM = {
     stylesInfoBtn: null,
     submitNamesBtn: null,
     reshuffleTeamsBtn: null,
-    teamsVoteContainer: null,
     challengeBtn: null,
     endImproBtn: null,
     pauseResumeBtn: null,
@@ -147,20 +145,16 @@ const DOM = {
     startRoundBtn: null,
     startConcertationBtn: null,
     startDirectImproBtn: null,
-    voteBtn: null,
     playerSelectionSection: null,
-    headerTitle: null,    // Added
-    headerSubtitle: null  // Added
+    headerTitle: null,
+    headerSubtitle: null
 };
 
 // Fonction pour initialiser les références DOM
 function initializeDOMElements() {
-    console.log('Initializing DOM elements');
-    
     // Sélection des boutons de joueurs
     DOM.playerButtons = document.querySelectorAll('.player-btn');
-    console.log('Found player buttons:', DOM.playerButtons.length);
-    
+
     // Sections principales
     DOM.nameEntrySection = document.getElementById('name-entry');
     DOM.playerForm = document.getElementById('player-form');
@@ -168,7 +162,6 @@ function initializeDOMElements() {
     DOM.teamsDisplaySection = document.getElementById('teams-display');
     DOM.roundSetupSection = document.getElementById('round-setup');
     DOM.countdownSection = document.getElementById('countdown');
-    DOM.improSummarySection = document.getElementById('impro-summary');
     DOM.improTimerSection = document.getElementById('impro-timer');
     DOM.voteSection = document.getElementById('vote-section');
     
@@ -212,14 +205,6 @@ function initializeDOMElements() {
     DOM.headerTitle = document.querySelector('header h1');
     DOM.headerSubtitle = document.querySelector('header p');
 
-    // Log des éléments non trouvés
-    console.log('DOM Elements status:');
-    Object.entries(DOM).forEach(([key, value]) => {
-        if (!value) {
-            console.error(`Missing DOM element: ${key}`);
-        }
-    });
-
     // Initialiser les écouteurs d'événements
     setupEventListeners();
 }
@@ -240,23 +225,16 @@ function toggleVisibility(element, isVisible) {
 
 // Configuration des écouteurs d'événements
 function setupEventListeners() {
-    console.log('Setting up event listeners');
-
     // Gestionnaire de clic pour les boutons de sélection du nombre de joueurs
     if (DOM.playerButtons && DOM.playerButtons.length > 0) {
         DOM.playerButtons.forEach(button => {
-            console.log('Adding click listener to button:', button.textContent);
-            button.addEventListener('click', (e) => {
-                console.log('Button clicked!', e.target);
+            button.addEventListener('click', () => {
                 const players = parseInt(button.getAttribute('data-players'));
-                console.log('Number of players selected:', players);
                 playerCount = players;
                 displayPlayerForm(players);
                 saveGameState();
             });
         });
-    } else {
-        console.error('Player buttons not found in setupEventListeners!');
     }
 
     // Gestion du bouton Reset
@@ -298,14 +276,10 @@ function setupEventListeners() {
     // Gestionnaire de clic pour le bouton de validation des noms
     if (DOM.submitNamesBtn) {
         DOM.submitNamesBtn.addEventListener('click', () => {
-            console.log('=== CLIC VALIDER ===');
-            console.log('playerCount:', playerCount);
             const inputs = Array.from(DOM.playerForm.querySelectorAll('input'));
-            console.log('inputs trouvés:', inputs.length);
             players = inputs
                            .map(input => input.value.trim())
                            .filter(name => name.length > 0);
-            console.log('players:', players);
 
             if (players.length === playerCount) {
                 generateTeams();
@@ -422,7 +396,6 @@ function setupEventListeners() {
 
 // Fonction pour afficher le formulaire de saisie des noms avec des valeurs par défaut
 function displayPlayerForm(count) {
-    console.log('Displaying player form for', count, 'players');
     toggleVisibility(DOM.playerSelectionSection, false);
     DOM.playerForm.innerHTML = ''; // Réinitialiser le formulaire
     
@@ -470,7 +443,6 @@ function showRoundSetup() {
 
 // Fonction pour démarrer une improvisation directe
 function startDirectImpro() {
-    console.log('Starting direct impro');
     const duration = DOM.durationSelect.value;
     const playersPerTeam = DOM.playersPerTeamSelect.value;
     const improType = DOM.improTypeSelect.value;
@@ -505,7 +477,6 @@ function startDirectImpro() {
 
 // Fonction pour terminer la concertation
 function endConcertation() {
-    console.log('Ending concertation');
     const duration = DOM.durationSelect.value;
     const playersPerTeam = DOM.playersPerTeamSelect.value;
     const improType = DOM.improTypeSelect.value;
@@ -540,7 +511,6 @@ function endConcertation() {
 
 // Fonction pour démarrer l'improvisation
 function startImprovisation() {
-    console.log('Starting improvisation');
     playSound(audioDingStart);
     const duration = parseInt(DOM.durationSelect.value);
 
@@ -742,7 +712,7 @@ function resetRoundSetup() {
     DOM.headerSubtitle.textContent = `Match en cours — Manche N°${roundNumber}`;
     toggleVisibility(DOM.voteSection, false);
     toggleVisibility(DOM.improTimerSection, false);
-    toggleVisibility(DOM.improSummarySection, false);
+
     toggleVisibility(DOM.roundSetupSection, true);
     toggleVisibility(DOM.nextRoundBtn, false);
     toggleVisibility(DOM.nullRoundBtn, false);
@@ -770,7 +740,7 @@ function resetGame() {
     toggleVisibility(DOM.countdownSection, false);
     toggleVisibility(DOM.improTimerSection, false);
     toggleVisibility(DOM.voteSection, false);
-    toggleVisibility(DOM.improSummarySection, false);
+
     toggleVisibility(DOM.nextRoundBtn, false);
     toggleVisibility(DOM.nullRoundBtn, false);
     
@@ -866,56 +836,26 @@ function getRandomItem(array) {
 
 // Fonction pour jouer un son avec gestion d'erreur
 async function playSound(audioObject) {
-    console.log('Tentative de lecture du son:', audioObject.src);
-    console.log('État initial de l\'audio:', {
-        readyState: audioObject.readyState,
-        paused: audioObject.paused,
-        currentTime: audioObject.currentTime,
-        duration: audioObject.duration
-    });
-
     try {
-        const playPromise = audioObject.play();
-        console.log('Promise de lecture obtenue');
-        
-        await playPromise;
-        console.log('Son joué avec succès');
+        await audioObject.play();
     } catch (error) {
         console.error('Erreur lors de la lecture du son:', error);
-        console.log('État de l\'audio après erreur:', {
-            readyState: audioObject.readyState,
-            paused: audioObject.paused,
-            currentTime: audioObject.currentTime,
-            duration: audioObject.duration
-        });
-
-        // Réessayer de charger et jouer le son
-        console.log('Rechargement du son...');
         audioObject.load();
-        
         try {
             await audioObject.play();
-            console.log('Son joué avec succès après rechargement');
         } catch (retryError) {
             console.error('Échec de la seconde tentative:', retryError);
-            console.log('État final de l\'audio:', {
-                readyState: audioObject.readyState,
-                paused: audioObject.paused,
-                currentTime: audioObject.currentTime,
-                duration: audioObject.duration
-            });
         }
     }
 }
 
 // Fonction pour démarrer la concertation
 function startConcertation() {
-    console.log('Starting concertation');
     const duration = 30; // 30 secondes de concertation
     
     // Masquer les sections non nécessaires
     toggleVisibility(DOM.roundSetupSection, false);
-    toggleVisibility(DOM.improSummarySection, false);
+
     toggleVisibility(DOM.improTimerSection, false);
     toggleVisibility(DOM.playerSelectionSection, false);
     
@@ -957,7 +897,6 @@ function saveGameState() {
         isPaused,
         timeLeft
     };
-    console.log('Saving state:', gameState);
     localStorage.setItem('improvisatricksState', JSON.stringify(gameState));
 }
 
@@ -965,8 +904,6 @@ function saveGameState() {
 function restoreGameState() {
     try {
         const savedState = localStorage.getItem('improvisatricksState');
-        console.log('Retrieved state:', savedState);
-        
         if (savedState) {
             const state = JSON.parse(savedState);
             playerCount = state.playerCount;
@@ -1037,7 +974,6 @@ function displayTeams() {
 
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM fully loaded');
     initializeDOMElements();
     restoreGameState();
 });
