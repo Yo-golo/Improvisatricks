@@ -71,6 +71,73 @@ header p {
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* ── Barre de recherche ── */
+.search-bar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0 16px;
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+#style-search {
+    flex: 1;
+    padding: 10px 14px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 2px solid #ff6600;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+#style-search::placeholder {
+    color: #7f8c8d;
+}
+
+#style-search:focus {
+    border-color: #ffcc00;
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.search-reset-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 0.2s;
+}
+
+.search-reset-btn:hover {
+    background-color: #ff6600;
+    border-color: #ff6600;
+}
+
+.search-empty {
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 0.95rem;
+    margin: 8px 0 16px;
+    font-style: italic;
+}
+
+.hidden {
+    display: none !important;
+}
+
 /* Tableau des styles */
 main {
     background-color: rgba(0, 0, 0, 0.85);
