@@ -38,12 +38,13 @@ function showModal({ title, message, icon, buttons }) {
             el.textContent = btn.label;
             el.className = btn.className || '';
             el.addEventListener('click', () => {
+                const val = btn.value;
                 overlay.classList.add('modal-closing');
                 setTimeout(() => {
                     overlay.classList.add('hidden');
                     overlay.classList.remove('modal-visible', 'modal-closing');
+                    resolve(val);
                 }, 180);
-                resolve(btn.value);
             });
             btnsEl.appendChild(el);
         });
