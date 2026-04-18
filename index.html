@@ -23,20 +23,16 @@
 
         <!-- Sélecteur du nombre de joueurs -->
         <section class="player-selection">
-            <div class="row">
-                <button class="player-btn" data-players="2">2 Joueurs</button>
-                <button class="player-btn" data-players="3">3 Joueurs</button>
-                <button class="player-btn" data-players="4">4 Joueurs</button>
-                <button class="player-btn" data-players="5">5 Joueurs</button>
-                <button class="player-btn" data-players="6">6 Joueurs</button>
-            </div>
-            <div class="row">
-                <button class="player-btn" data-players="7">7 Joueurs</button>
-                <button class="player-btn" data-players="8">8 Joueurs</button>
-                <button class="player-btn" data-players="9">9 Joueurs</button>
-                <button class="player-btn" data-players="10">10 Joueurs</button>
-                <button class="player-btn" data-players="12">12 Joueurs</button>
-            </div>
+            <button class="player-btn" data-players="2">2 Joueurs</button>
+            <button class="player-btn" data-players="3">3 Joueurs</button>
+            <button class="player-btn" data-players="4">4 Joueurs</button>
+            <button class="player-btn" data-players="5">5 Joueurs</button>
+            <button class="player-btn" data-players="6">6 Joueurs</button>
+            <button class="player-btn" data-players="7">7 Joueurs</button>
+            <button class="player-btn" data-players="8">8 Joueurs</button>
+            <button class="player-btn" data-players="9">9 Joueurs</button>
+            <button class="player-btn" data-players="10">10 Joueurs</button>
+            <button class="player-btn" data-players="12">12 Joueurs</button>
         </section>
 
         <!-- Zone de saisie des noms des joueurs -->
@@ -83,13 +79,15 @@
                 <div>
                     <label for="impro-type">Nature de l'improvisation :</label>
                     <select id="impro-type">
+                        <option value="equipe-seule">Équipe seule</option>
                         <option value="mixte">Mixte</option>
                         <option value="comparee">Comparée</option>
                     </select>
+                    <p id="impro-type-hint" class="impro-type-hint"></p>
                 </div>
 
                 <div>
-                    <label for="style">Style :</label>
+                    <label for="style">Style : <button type="button" id="styles-info-btn" class="btn-info-style" title="À propos des styles d'impro">ⓘ</button></label>
                     <select id="style"></select>
                 </div>
 
@@ -110,6 +108,7 @@
         <section id="countdown" class="hidden">
             <h2>Concertation en cours...</h2>
             <p>Temps restant : <span id="timer">00:30</span></p>
+            <div id="concertation-summary" class="impro-recap"></div>
         </section>
 
         <!-- Section de compte à rebours pour l'improvisation -->
@@ -142,11 +141,23 @@
             </div>
         </section>
 
-        <!-- Bouton vers la page des styles d'improvisation -->
-        <section class="about-styles">
-            <button id="styles-info-btn" class="btn-secondary" onclick="window.open('stylesimpro.html', '_blank', 'noopener,noreferrer')">À propos des styles d'impro</button>
-        </section>
+        <footer class="site-footer">
+            <span>© 2026 Yo_golo</span>
+            <span class="footer-sep">—</span>
+            <a href="mode_emploi.html" target="_blank" rel="noopener noreferrer">Mode d'emploi</a>
+        </footer>
+
     </div>
+    <!-- Drawer styles d'improvisation -->
+    <div id="drawer-backdrop"></div>
+    <div id="styles-drawer" aria-hidden="true">
+        <div class="drawer-header">
+            <span class="drawer-title">Styles d'improvisation</span>
+            <button id="drawer-close-btn" title="Fermer">✕</button>
+        </div>
+        <iframe id="styles-iframe" src="stylesimpro.html" title="Guide des styles d'improvisation"></iframe>
+    </div>
+
     <div id="modal-overlay" class="hidden" role="dialog" aria-modal="true">
         <div class="modal-card">
             <div id="modal-icon" class="modal-icon"></div>

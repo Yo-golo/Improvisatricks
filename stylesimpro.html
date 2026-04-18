@@ -15,6 +15,13 @@
             <button id="back-btn" class="back-button">Retour au jeu</button>
         </header>
         <main id="styles-container">
+            <!-- Barre de recherche -->
+            <div class="search-bar">
+                <input type="text" id="style-search" placeholder="Rechercher un style… (3 lettres min.)" autocomplete="off" spellcheck="false">
+                <button id="search-reset" class="search-reset-btn" aria-label="Effacer la recherche">✕</button>
+            </div>
+            <p id="search-empty" class="search-empty hidden">Aucun style ne correspond à cette recherche.</p>
+
             <!-- Tableau des styles -->
             <section>
                 <table id="styles-table">
@@ -36,7 +43,11 @@
     <script>
         // Gestionnaire pour le bouton retour
         document.getElementById('back-btn').addEventListener('click', () => {
-            window.location.href = 'index.html';
+            if (window.self !== window.top) {
+                window.parent.postMessage('close-styles-drawer', '*');
+            } else {
+                window.location.href = 'index.html';
+            }
         });
     </script>
 </body>

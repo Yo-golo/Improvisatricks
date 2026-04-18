@@ -1,3 +1,26 @@
+// Drawer styles d'improvisation
+function openStylesDrawer() {
+    document.getElementById('styles-drawer').classList.add('open');
+    document.getElementById('drawer-backdrop').classList.add('open');
+    document.getElementById('styles-drawer').setAttribute('aria-hidden', 'false');
+}
+
+function closeStylesDrawer() {
+    document.getElementById('styles-drawer').classList.remove('open');
+    document.getElementById('drawer-backdrop').classList.remove('open');
+    document.getElementById('styles-drawer').setAttribute('aria-hidden', 'true');
+}
+
+window.addEventListener('message', e => {
+    if (e.data === 'close-styles-drawer') closeStylesDrawer();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('styles-info-btn')?.addEventListener('click', openStylesDrawer);
+    document.getElementById('drawer-close-btn')?.addEventListener('click', closeStylesDrawer);
+    document.getElementById('drawer-backdrop')?.addEventListener('click', closeStylesDrawer);
+});
+
 // Système de modale custom
 function showModal({ title, message, icon, buttons }) {
     return new Promise(resolve => {
@@ -15,12 +38,13 @@ function showModal({ title, message, icon, buttons }) {
             el.textContent = btn.label;
             el.className = btn.className || '';
             el.addEventListener('click', () => {
+                const val = btn.value;
                 overlay.classList.add('modal-closing');
                 setTimeout(() => {
                     overlay.classList.add('hidden');
                     overlay.classList.remove('modal-visible', 'modal-closing');
+                    resolve(val);
                 }, 180);
-                resolve(btn.value);
             });
             btnsEl.appendChild(el);
         });
@@ -52,6 +76,10 @@ let playerCount = 0;
 let players = [];
 let teams = [];
 let scores = [0, 0]; // Initialisation des scores pour les deux équipes
+let roundNumber = 0;
+let selectedVoteIndex = null;
+let compareePhase = 0;       // 0 = normal, 1 = équipe 1 en cours, 2 = équipe 2 en cours
+let compareeFirstTeam = 0;   // index (0 ou 1) de l'équipe qui joue en premier
 
 // Variables pour gérer l'état de pause
 let isPaused = false;
@@ -64,6 +92,31 @@ const audio10Sec = new Audio('./snd/signal_10_sec.mp3');
 const audioFinImpro = new Audio('./snd/fin_impro.mp3');
 const audioConcertation = new Audio('./snd/concertation.mp3');
 const audioDingStart = new Audio('./snd/ding-start.mp3');
+
+// Sur mobile (iOS/Android), l'AudioContext est bloqué tant qu'un geste
+// utilisateur direct ne l'a pas déverrouillé. On pré-joue silencieusement
+// tous les sons au premier tap pour les rendre disponibles ensuite.
+const ALL_SOUNDS = [audio30Sec, audio10Sec, audioFinImpro, audioConcertation, audioDingStart];
+
+function unlockAudio() {
+    ALL_SOUNDS.forEach(audio => {
+        audio.muted = true;
+        audio.play().then(() => {
+            audio.pause();
+            audio.currentTime = 0;
+            audio.muted = false;
+        }).catch(() => {});
+    });
+}
+
+document.addEventListener('touchstart', unlockAudio, { once: true });
+document.addEventListener('click',      unlockAudio, { once: true });
+
+// Chrome iOS suspend l'audio quand le tab passe en arrière-plan.
+// On re-déverrouille silencieusement au retour au premier plan.
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') unlockAudio();
+});
 
 // Liste des challenges possibles
 const CHALLENGES = [
@@ -91,7 +144,6 @@ const DOM = {
     playersPerTeamSelect: null,
     countdownSection: null,
     timer: null,
-    improSummarySection: null,
     improDetails: null,
     improTimerSection: null,
     improTimerDisplay: null,
@@ -101,7 +153,6 @@ const DOM = {
     stylesInfoBtn: null,
     submitNamesBtn: null,
     reshuffleTeamsBtn: null,
-    teamsVoteContainer: null,
     challengeBtn: null,
     endImproBtn: null,
     pauseResumeBtn: null,
@@ -119,20 +170,16 @@ const DOM = {
     startRoundBtn: null,
     startConcertationBtn: null,
     startDirectImproBtn: null,
-    voteBtn: null,
     playerSelectionSection: null,
-    headerTitle: null,    // Added
-    headerSubtitle: null  // Added
+    headerTitle: null,
+    headerSubtitle: null
 };
 
 // Fonction pour initialiser les références DOM
 function initializeDOMElements() {
-    console.log('Initializing DOM elements');
-    
     // Sélection des boutons de joueurs
     DOM.playerButtons = document.querySelectorAll('.player-btn');
-    console.log('Found player buttons:', DOM.playerButtons.length);
-    
+
     // Sections principales
     DOM.nameEntrySection = document.getElementById('name-entry');
     DOM.playerForm = document.getElementById('player-form');
@@ -140,7 +187,6 @@ function initializeDOMElements() {
     DOM.teamsDisplaySection = document.getElementById('teams-display');
     DOM.roundSetupSection = document.getElementById('round-setup');
     DOM.countdownSection = document.getElementById('countdown');
-    DOM.improSummarySection = document.getElementById('impro-summary');
     DOM.improTimerSection = document.getElementById('impro-timer');
     DOM.voteSection = document.getElementById('vote-section');
     
@@ -184,14 +230,6 @@ function initializeDOMElements() {
     DOM.headerTitle = document.querySelector('header h1');
     DOM.headerSubtitle = document.querySelector('header p');
 
-    // Log des éléments non trouvés
-    console.log('DOM Elements status:');
-    Object.entries(DOM).forEach(([key, value]) => {
-        if (!value) {
-            console.error(`Missing DOM element: ${key}`);
-        }
-    });
-
     // Initialiser les écouteurs d'événements
     setupEventListeners();
 }
@@ -212,23 +250,16 @@ function toggleVisibility(element, isVisible) {
 
 // Configuration des écouteurs d'événements
 function setupEventListeners() {
-    console.log('Setting up event listeners');
-
     // Gestionnaire de clic pour les boutons de sélection du nombre de joueurs
     if (DOM.playerButtons && DOM.playerButtons.length > 0) {
         DOM.playerButtons.forEach(button => {
-            console.log('Adding click listener to button:', button.textContent);
-            button.addEventListener('click', (e) => {
-                console.log('Button clicked!', e.target);
+            button.addEventListener('click', () => {
                 const players = parseInt(button.getAttribute('data-players'));
-                console.log('Number of players selected:', players);
                 playerCount = players;
                 displayPlayerForm(players);
                 saveGameState();
             });
         });
-    } else {
-        console.error('Player buttons not found in setupEventListeners!');
     }
 
     // Gestion du bouton Reset
@@ -270,14 +301,10 @@ function setupEventListeners() {
     // Gestionnaire de clic pour le bouton de validation des noms
     if (DOM.submitNamesBtn) {
         DOM.submitNamesBtn.addEventListener('click', () => {
-            console.log('=== CLIC VALIDER ===');
-            console.log('playerCount:', playerCount);
             const inputs = Array.from(DOM.playerForm.querySelectorAll('input'));
-            console.log('inputs trouvés:', inputs.length);
             players = inputs
                            .map(input => input.value.trim())
                            .filter(name => name.length > 0);
-            console.log('players:', players);
 
             if (players.length === playerCount) {
                 generateTeams();
@@ -296,6 +323,23 @@ function setupEventListeners() {
     // Gestionnaire de clic pour le bouton "OK" (lancer la configuration de la manche)
     if (DOM.startRoundBtn) {
         DOM.startRoundBtn.addEventListener('click', showRoundSetup);
+    }
+
+    // Description dynamique de la nature de l'impro
+    const improTypeHint = document.getElementById('impro-type-hint');
+    const IMPRO_TYPE_HINTS = {
+        'equipe-seule': 'Une seule équipe joue l\'impro.',
+        'mixte':        'L\'équipe adverse peut intervenir dans l\'impro.',
+        'comparee':     'Chaque équipe joue l\'impro l\'une après l\'autre.'
+    };
+    function updateImproTypeHint() {
+        if (improTypeHint && DOM.improTypeSelect) {
+            improTypeHint.textContent = IMPRO_TYPE_HINTS[DOM.improTypeSelect.value] || '';
+        }
+    }
+    if (DOM.improTypeSelect) {
+        DOM.improTypeSelect.addEventListener('change', updateImproTypeHint);
+        updateImproTypeHint(); // afficher dès le chargement
     }
 
     // Gestion du bouton "Hasard"
@@ -325,17 +369,31 @@ function setupEventListeners() {
                 const randomDurationIndex = Math.floor(Math.random() * durationSelect.options.length);
                 durationSelect.selectedIndex = randomDurationIndex;
             }
+
+            updateImproTypeHint();
         });
     }
 
     // Gérer le bouton "Concertation"
     if (DOM.startConcertationBtn) {
-        DOM.startConcertationBtn.addEventListener('click', startConcertation);
+        DOM.startConcertationBtn.addEventListener('click', async () => {
+            if (DOM.improTypeSelect.value === 'comparee' && compareePhase === 0) {
+                await handleCompareeSetup();
+            } else {
+                startConcertation();
+            }
+        });
     }
 
     // Gérer le bouton "Impro directe"
     if (DOM.startDirectImproBtn) {
-        DOM.startDirectImproBtn.addEventListener('click', startDirectImpro);
+        DOM.startDirectImproBtn.addEventListener('click', async () => {
+            if (DOM.improTypeSelect.value === 'comparee' && compareePhase === 0) {
+                await handleCompareeSetup();
+            } else {
+                startDirectImpro();
+            }
+        });
     }
 
     // Gestion du bouton "Démarrer l'impro"
@@ -348,23 +406,21 @@ function setupEventListeners() {
         DOM.voteBtn.addEventListener('click', displayVoteOptions);
     }
 
-    // Gestion du bouton "Manche nulle"
-    if (DOM.nullRoundBtn) {
-        DOM.nullRoundBtn.addEventListener('click', () => {
-            toggleVisibility(DOM.nullRoundBtn, false);
-            toggleVisibility(DOM.nextRoundBtn, true);
-        });
-    }
-
-    // Gestion du bouton "Prochaine manche"
+    // Gestion du bouton "Prochaine manche" (confirme le vote sélectionné)
     if (DOM.nextRoundBtn) {
-        DOM.nextRoundBtn.addEventListener('click', resetRoundSetup);
+        DOM.nextRoundBtn.addEventListener('click', async () => {
+            if (selectedVoteIndex !== null) {
+                scores[selectedVoteIndex]++;
+                updateScoreDisplay();
+                if (await checkForWinner()) return;
+            }
+            resetRoundSetup();
+        });
     }
 }
 
 // Fonction pour afficher le formulaire de saisie des noms avec des valeurs par défaut
 function displayPlayerForm(count) {
-    console.log('Displaying player form for', count, 'players');
     toggleVisibility(DOM.playerSelectionSection, false);
     DOM.playerForm.innerHTML = ''; // Réinitialiser le formulaire
     
@@ -388,8 +444,9 @@ function showRoundSetup() {
     toggleVisibility(DOM.roundSetupSection, true);
     
     // Update header text
+    roundNumber++;
     DOM.headerTitle.textContent = 'Improvisatricks';
-    DOM.headerSubtitle.textContent = 'Match en cours';
+    DOM.headerSubtitle.textContent = `Match en cours — Manche N°${roundNumber}`;
     
     // Mise à jour du sélecteur de joueurs par équipe
     const maxPlayersPerTeam = Math.floor(playerCount / 2);
@@ -411,7 +468,6 @@ function showRoundSetup() {
 
 // Fonction pour démarrer une improvisation directe
 function startDirectImpro() {
-    console.log('Starting direct impro');
     const duration = DOM.durationSelect.value;
     const playersPerTeam = DOM.playersPerTeamSelect.value;
     const improType = DOM.improTypeSelect.value;
@@ -446,7 +502,6 @@ function startDirectImpro() {
 
 // Fonction pour terminer la concertation
 function endConcertation() {
-    console.log('Ending concertation');
     const duration = DOM.durationSelect.value;
     const playersPerTeam = DOM.playersPerTeamSelect.value;
     const improType = DOM.improTypeSelect.value;
@@ -481,7 +536,6 @@ function endConcertation() {
 
 // Fonction pour démarrer l'improvisation
 function startImprovisation() {
-    console.log('Starting improvisation');
     playSound(audioDingStart);
     const duration = parseInt(DOM.durationSelect.value);
 
@@ -523,30 +577,120 @@ function startImprovisation() {
                 if (DOM.challengeBtn) DOM.challengeBtn.style.display = 'none';
                 if (DOM.endImproBtn) DOM.endImproBtn.style.display = 'none';
                 setTimeout(() => {
-                    toggleVisibility(DOM.voteBtn, true);
+                    if (compareePhase === 1) {
+                        showCompareeTransition();
+                    } else {
+                        toggleVisibility(DOM.voteBtn, true);
+                    }
                 }, 5000);
             }
         }
     }, 1000);
 }
 
+// ── Impro comparée ──────────────────────────────────────────────────────────
+
+// Modale 1 : choix de l'équipe qui commence + mode de jeu
+async function handleCompareeSetup() {
+    // Étape 1 — Qui commence ?
+    const teamChoice = await showModal({
+        title: 'Impro comparée',
+        icon: '🔀',
+        message: `${teams[0].join(', ')}  vs  ${teams[1].join(', ')}\n\nQuelle équipe commence ?`,
+        buttons: [
+            { label: 'Équipe 1',    value: 0,        className: 'modal-btn-secondary' },
+            { label: '🎲 Au sort',  value: 'random', className: 'modal-btn-primary'   },
+            { label: 'Équipe 2',    value: 1,        className: 'modal-btn-secondary' }
+        ]
+    });
+
+    compareeFirstTeam = (teamChoice === 'random')
+        ? Math.floor(Math.random() * 2)
+        : Number(teamChoice);
+
+    // Étape 2 — Mode de jeu pour l'équipe 1
+    const modeChoice = await showModal({
+        title: `Équipe ${compareeFirstTeam + 1} commence`,
+        icon: '▶️',
+        message: `Mode de jeu pour l'Équipe ${compareeFirstTeam + 1} :`,
+        buttons: [
+            { label: 'Concertation',  value: 'concertation', className: 'modal-btn-secondary' },
+            { label: 'Impro directe', value: 'direct',       className: 'modal-btn-primary'   }
+        ]
+    });
+
+    compareePhase = 1;
+    DOM.headerSubtitle.textContent =
+        `Match en cours — Manche N°${roundNumber} · Impro comparée (1/2)`;
+
+    if (modeChoice === 'concertation') {
+        startConcertation();
+    } else {
+        startDirectImpro();
+    }
+}
+
+// Modale 2 : transition vers l'équipe 2 après la fin de la première impro
+async function showCompareeTransition() {
+    const secondTeam = 1 - compareeFirstTeam;
+    const style        = DOM.styleSelect.value;
+    const subject      = DOM.subjectSelect.value;
+    const duration     = DOM.durationSelect.value;
+    const playersPerTeam = DOM.playersPerTeamSelect.value;
+
+    const recap = `Style : ${style}\nSujet : ${subject}\nDurée : ${duration}s — ${playersPerTeam} joueur(s) par équipe`;
+
+    const modeChoice = await showModal({
+        title: `Au tour de l'Équipe ${secondTeam + 1}`,
+        icon: '🔀',
+        message: `Rappel de l'impro :\n${recap}\n\nMode de jeu pour l'Équipe ${secondTeam + 1} :`,
+        buttons: [
+            { label: 'Concertation',  value: 'concertation', className: 'modal-btn-secondary' },
+            { label: 'Impro directe', value: 'direct',       className: 'modal-btn-primary'   }
+        ]
+    });
+
+    compareePhase = 2;
+    DOM.headerSubtitle.textContent =
+        `Match en cours — Manche N°${roundNumber} · Impro comparée (2/2)`;
+
+    if (modeChoice === 'concertation') {
+        startConcertation();
+    } else {
+        startDirectImpro();
+    }
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+
 // Fonction pour afficher les options de vote pour les équipes
 function displayVoteOptions() {
+    selectedVoteIndex = null;
     toggleVisibility(DOM.improTimerSection, false);
     toggleVisibility(DOM.voteBtn, false);
     toggleVisibility(DOM.voteSection, true);
+    toggleVisibility(DOM.nullRoundBtn, false);
+    toggleVisibility(DOM.nextRoundBtn, false);
 
     const teamsVoteContainer = document.getElementById('teams-vote');
     teamsVoteContainer.innerHTML = '';
 
-    teams.forEach((team, index) => {
-        const teamCard = createTeamCard(index, team, scores[index]);
-        teamsVoteContainer.appendChild(teamCard);
-    });
+    teamsVoteContainer.appendChild(createTeamCard(0, teams[0], scores[0]));
 
-    // Afficher le bouton de manche nulle
-    toggleVisibility(DOM.nullRoundBtn, true);
-    toggleVisibility(DOM.nextRoundBtn, false);
+    // Bouton "Match nul" entre les deux cartes
+    const nullBtn = document.createElement('button');
+    nullBtn.className = 'btn-null-inline';
+    nullBtn.textContent = 'Match nul';
+    nullBtn.addEventListener('click', async () => {
+        scores[0]++;
+        scores[1]++;
+        updateScoreDisplay();
+        if (await checkForWinner()) return;
+        resetRoundSetup();
+    });
+    teamsVoteContainer.appendChild(nullBtn);
+
+    teamsVoteContainer.appendChild(createTeamCard(1, teams[1], scores[1]));
 }
 
 // Fonction pour créer une carte d'équipe
@@ -558,34 +702,42 @@ function createTeamCard(index, team, score) {
         <p>${team.join(', ')}</p>
         ${score > 0 ? `<p>Points: ${score}</p>` : ''}
     `;
-    
-    // Ajouter l'événement de vote
-    teamCard.addEventListener('click', () => {
-        scores[index]++;
-        updateScoreDisplay();
-        checkForWinner();
+
+    teamCard.addEventListener('click', async () => {
+        if (scores[index] + 1 >= 5) {
+            scores[index]++;
+            updateScoreDisplay();
+            await checkForWinner();
+            return;
+        }
+        document.querySelectorAll('#teams-vote .team-card').forEach(c => c.classList.remove('selected'));
+        teamCard.classList.add('selected');
+        selectedVoteIndex = index;
+        toggleVisibility(DOM.nextRoundBtn, true);
     });
-    
+
     return teamCard;
 }
 
-// Fonction pour vérifier si une équipe a gagné
+// Fonction pour vérifier si une équipe a gagné — retourne true si la partie est terminée
 async function checkForWinner() {
     const winningTeamIndex = scores.findIndex(score => score >= 5);
     if (winningTeamIndex >= 0) {
         await showAlert(`L'équipe ${winningTeamIndex + 1} a gagné !`, 'Victoire !', '🏆');
         resetGame();
-    } else {
-        toggleVisibility(document.getElementById('null-round-btn'), false);
-        toggleVisibility(document.getElementById('next-round-btn'), true);
+        return true;
     }
+    return false;
 }
 
 // Fonction pour réinitialiser la configuration de la manche pour la prochaine manche
 function resetRoundSetup() {
+    compareePhase = 0;
+    roundNumber++;
+    DOM.headerSubtitle.textContent = `Match en cours — Manche N°${roundNumber}`;
     toggleVisibility(DOM.voteSection, false);
     toggleVisibility(DOM.improTimerSection, false);
-    toggleVisibility(DOM.improSummarySection, false);
+
     toggleVisibility(DOM.roundSetupSection, true);
     toggleVisibility(DOM.nextRoundBtn, false);
     toggleVisibility(DOM.nullRoundBtn, false);
@@ -598,6 +750,10 @@ function resetGame() {
     players = [];
     teams = [];
     scores = [0, 0];
+    roundNumber = 0;
+    selectedVoteIndex = null;
+    compareePhase = 0;
+    compareeFirstTeam = 0;
     isPaused = false;
     
     // Réinitialisation de l'affichage
@@ -609,7 +765,7 @@ function resetGame() {
     toggleVisibility(DOM.countdownSection, false);
     toggleVisibility(DOM.improTimerSection, false);
     toggleVisibility(DOM.voteSection, false);
-    toggleVisibility(DOM.improSummarySection, false);
+
     toggleVisibility(DOM.nextRoundBtn, false);
     toggleVisibility(DOM.nullRoundBtn, false);
     
@@ -705,62 +861,51 @@ function getRandomItem(array) {
 
 // Fonction pour jouer un son avec gestion d'erreur
 async function playSound(audioObject) {
-    console.log('Tentative de lecture du son:', audioObject.src);
-    console.log('État initial de l\'audio:', {
-        readyState: audioObject.readyState,
-        paused: audioObject.paused,
-        currentTime: audioObject.currentTime,
-        duration: audioObject.duration
-    });
-
     try {
-        const playPromise = audioObject.play();
-        console.log('Promise de lecture obtenue');
-        
-        await playPromise;
-        console.log('Son joué avec succès');
+        audioObject.currentTime = 0;
+        await audioObject.play();
     } catch (error) {
         console.error('Erreur lors de la lecture du son:', error);
-        console.log('État de l\'audio après erreur:', {
-            readyState: audioObject.readyState,
-            paused: audioObject.paused,
-            currentTime: audioObject.currentTime,
-            duration: audioObject.duration
-        });
-
-        // Réessayer de charger et jouer le son
-        console.log('Rechargement du son...');
         audioObject.load();
-        
         try {
+            audioObject.currentTime = 0;
             await audioObject.play();
-            console.log('Son joué avec succès après rechargement');
         } catch (retryError) {
             console.error('Échec de la seconde tentative:', retryError);
-            console.log('État final de l\'audio:', {
-                readyState: audioObject.readyState,
-                paused: audioObject.paused,
-                currentTime: audioObject.currentTime,
-                duration: audioObject.duration
-            });
         }
     }
 }
 
 // Fonction pour démarrer la concertation
 function startConcertation() {
-    console.log('Starting concertation');
     const duration = 30; // 30 secondes de concertation
-    
+
+    // Remplir le récapitulatif visible pendant la concertation
+    const summaryEl = document.getElementById('concertation-summary');
+    if (summaryEl) {
+        const style        = DOM.styleSelect.value;
+        const subject      = DOM.subjectSelect.value;
+        const improType    = DOM.improTypeSelect.value;
+        const dur          = DOM.durationSelect.value;
+        const playersPerTeam = DOM.playersPerTeamSelect.value;
+        summaryEl.innerHTML = `
+            <dl class="recap-grid">
+                <dt>Style</dt>      <dd>${style}</dd>
+                <dt>Sujet</dt>      <dd>${subject}</dd>
+                <dt>Nature</dt>     <dd>${improType}</dd>
+                <dt>Durée</dt>      <dd>${dur} s</dd>
+                <dt>Joueurs/équipe</dt><dd>${playersPerTeam}</dd>
+            </dl>`;
+    }
+
     // Masquer les sections non nécessaires
     toggleVisibility(DOM.roundSetupSection, false);
-    toggleVisibility(DOM.improSummarySection, false);
     toggleVisibility(DOM.improTimerSection, false);
     toggleVisibility(DOM.playerSelectionSection, false);
-    
+
     // Afficher la section de compte à rebours
     toggleVisibility(DOM.countdownSection, true);
-    
+
     // Jouer le son de concertation
     playSound(audioConcertation);
     
@@ -796,7 +941,6 @@ function saveGameState() {
         isPaused,
         timeLeft
     };
-    console.log('Saving state:', gameState);
     localStorage.setItem('improvisatricksState', JSON.stringify(gameState));
 }
 
@@ -804,8 +948,6 @@ function saveGameState() {
 function restoreGameState() {
     try {
         const savedState = localStorage.getItem('improvisatricksState');
-        console.log('Retrieved state:', savedState);
-        
         if (savedState) {
             const state = JSON.parse(savedState);
             playerCount = state.playerCount;
@@ -876,7 +1018,6 @@ function displayTeams() {
 
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM fully loaded');
     initializeDOMElements();
     restoreGameState();
 });

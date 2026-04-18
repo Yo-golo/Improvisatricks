@@ -99,4 +99,34 @@ document.addEventListener('DOMContentLoaded', function() {
         row.appendChild(explanationCell);
         stylesBody.appendChild(row);
     });
+
+    // Moteur de recherche
+    const searchInput  = document.getElementById('style-search');
+    const searchReset  = document.getElementById('search-reset');
+    const searchEmpty  = document.getElementById('search-empty');
+    const allRows      = Array.from(stylesBody.querySelectorAll('tr'));
+
+    function filterStyles(query) {
+        const q = query.trim().toLowerCase();
+        const active = q.length >= 3;
+        let visibleCount = 0;
+
+        allRows.forEach(row => {
+            const title = row.querySelector('td:first-child').textContent.toLowerCase();
+            const visible = !active || title.includes(q);
+            row.style.display = visible ? '' : 'none';
+            if (visible) visibleCount++;
+        });
+
+        searchEmpty.classList.toggle('hidden', visibleCount > 0 || !active);
+        searchReset.style.display = query.length > 0 ? 'flex' : 'none';
+    }
+
+    searchInput.addEventListener('input', () => filterStyles(searchInput.value));
+
+    searchReset.addEventListener('click', () => {
+        searchInput.value = '';
+        filterStyles('');
+        searchInput.focus();
+    });
 });
