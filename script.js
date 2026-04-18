@@ -112,6 +112,12 @@ function unlockAudio() {
 document.addEventListener('touchstart', unlockAudio, { once: true });
 document.addEventListener('click',      unlockAudio, { once: true });
 
+// Chrome iOS suspend l'audio quand le tab passe en arrière-plan.
+// On re-déverrouille silencieusement au retour au premier plan.
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') unlockAudio();
+});
+
 // Liste des challenges possibles
 const CHALLENGES = [
     'À cloche-pied',
@@ -856,11 +862,13 @@ function getRandomItem(array) {
 // Fonction pour jouer un son avec gestion d'erreur
 async function playSound(audioObject) {
     try {
+        audioObject.currentTime = 0;
         await audioObject.play();
     } catch (error) {
         console.error('Erreur lors de la lecture du son:', error);
         audioObject.load();
         try {
+            audioObject.currentTime = 0;
             await audioObject.play();
         } catch (retryError) {
             console.error('Échec de la seconde tentative:', retryError);
