@@ -452,6 +452,39 @@ select:focus {
     backdrop-filter: blur(10px);
 }
 
+/* Récapitulatif affiché pendant la concertation */
+.impro-recap {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(255, 102, 0, 0.08);
+    border: 1px solid rgba(255, 102, 0, 0.25);
+    border-radius: var(--button-radius);
+    text-align: left;
+}
+
+.recap-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 6px 16px;
+    margin: 0;
+}
+
+.recap-grid dt {
+    color: var(--secondary-color);
+    font-weight: 600;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.recap-grid dd {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 0.95em;
+    opacity: 0.9;
+}
+
 /* Affichage des minuteurs — grand et lisible */
 #timer, #impro-timer-display {
     font-size: 3em;

@@ -879,16 +879,33 @@ async function playSound(audioObject) {
 // Fonction pour démarrer la concertation
 function startConcertation() {
     const duration = 30; // 30 secondes de concertation
-    
+
+    // Remplir le récapitulatif visible pendant la concertation
+    const summaryEl = document.getElementById('concertation-summary');
+    if (summaryEl) {
+        const style        = DOM.styleSelect.value;
+        const subject      = DOM.subjectSelect.value;
+        const improType    = DOM.improTypeSelect.value;
+        const dur          = DOM.durationSelect.value;
+        const playersPerTeam = DOM.playersPerTeamSelect.value;
+        summaryEl.innerHTML = `
+            <dl class="recap-grid">
+                <dt>Style</dt>      <dd>${style}</dd>
+                <dt>Sujet</dt>      <dd>${subject}</dd>
+                <dt>Nature</dt>     <dd>${improType}</dd>
+                <dt>Durée</dt>      <dd>${dur} s</dd>
+                <dt>Joueurs/équipe</dt><dd>${playersPerTeam}</dd>
+            </dl>`;
+    }
+
     // Masquer les sections non nécessaires
     toggleVisibility(DOM.roundSetupSection, false);
-
     toggleVisibility(DOM.improTimerSection, false);
     toggleVisibility(DOM.playerSelectionSection, false);
-    
+
     // Afficher la section de compte à rebours
     toggleVisibility(DOM.countdownSection, true);
-    
+
     // Jouer le son de concertation
     playSound(audioConcertation);
     
