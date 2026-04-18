@@ -137,7 +137,7 @@ header p {
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    background-color: var(--primary-color);
+    background-color: #e02020;
     color: var(--text-light);
     border: none;
     font-size: 24px;
@@ -151,9 +151,9 @@ header p {
 }
 
 #reset-btn:hover {
-    background-color: var(--secondary-color);
+    background-color: #ff3333;
     transform: rotate(180deg) scale(1.1);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 6px 20px rgba(224, 32, 32, 0.45);
 }
 
 /* Sélecteur de joueurs */
